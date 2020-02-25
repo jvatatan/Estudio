@@ -1,0 +1,237 @@
+{% extends 'base/base.html' %}
+{% block main %}
+{% load bootstrap4 %}
+{% load staticfiles i18n %}
+
+<!--para que el mensaje de validación desaparesca automaticamente la url-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<body>
+  <div class="container">
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow mb-4">
+            <!-- mensaje de validación de creacion de Dispositivo Medico-->
+            {% if messages %}
+      
+            {% for message in messages %}
+                
+                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:50px;">
+                  <h1 {% if mesage.tags == "success" %} class="alert alert-sucess "{% endif %}>{{ message }}</h1>
+                </div>
+                <br>
+            {% endfor %}
+
+
+            {% endif %}
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Lista de dispositivos medicós registrados</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                 <!-- Búsqueda en la barra superior-->
+                 <form method="get" action="{% url 'buscarDispositivoMedico' %}" id="buscar_dispositivoMedico" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" name="asignacionColor" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit" title="Buscar">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="dataTables_length" id="dataTable_length"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div id="dataTable_filter" class="dataTables_filter"></div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
+                        role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                        <thead>
+                          <tr role="row">
+                            <th class="sorting_desc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Nombre: activate to sort column ascending" aria-sort="descending" style="width: 99px;">Nombre
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Distribuidor: activate to sort column ascending" style="width: 157px;">Fecha de vencimiento
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Nickname: activate to sort column ascending" style="width: 70px;">Fabricado
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Email: activate to sort column ascending" style="width: 31px;">Registro Invima
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="% Comision: activate to sort column ascending" style="width: 68px;"># Lote
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Presentacion Comercial
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Forma Farmaceutica
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Principio Activo
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Unidad Medica
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Porcentaje
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Temperatura
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 67px;">Riesgo
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Cantidad
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Codigo
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 90px;">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                          
+                        <tbody>
+                          <!-- funcion para la asignacion de color -->
+                            {% if object_list %}
+                            {% for dispositivoMedico in object_list %}
+                            {% if dispositivoMedico.asignacionColor == 'Rojo' %}
+                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(255, 30, 30);">
+                            <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.registro_invima}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.numero_lote}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.presentacion_comercial}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.forma_farmaceutica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.principio_activo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.unidad_medica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.porcentaje}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.temperatura}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.riesgo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.cantidad}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.codigo}}</b></td>
+                            <td style="background-color:rgb(255, 255, 255);">
+                    </div>
+                  </div>
+                            <a href="{% url 'actualizarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Actualizar Dispositivo Medicó">
+                              <button class="btn btn-primary btn-sm">
+                              <i class="fa fa-edit"></i>
+                              </button>
+                            </a>
+                            <a href="{% url 'eliminarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Eliminar Dispositivo Medicó">
+                              <button class="btn btn-danger btn-sm">
+                              <i class="fa fa-trash"></i>
+                              </button>
+                            </a>
+                            
+                          </td>
+                          </tr>
+                          {% endif %}
+                          {% if dispositivoMedico.asignacionColor == 'Amarillo' %}
+                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(239, 251, 0);">
+                            <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.registro_invima}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.numero_lote}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.presentacion_comercial}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.forma_farmaceutica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.principio_activo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.unidad_medica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.porcentaje}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.temperatura}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.riesgo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.cantidad}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.codigo}}</b></td>
+                            <td style="background-color:rgb(255, 255, 255);">
+                    </div>
+                  </div>
+                            <a href="{% url 'actualizarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Actualizar Dispositivo Medicó">
+                              <button class="btn btn-primary btn-sm">
+                              <i class="fa fa-edit"></i>
+                              </button>
+                            </a>
+                            <a href="{% url 'eliminarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Eliminar Dispositivo Medicó">
+                              <button class="btn btn-danger btn-sm">
+                              <i class="fa fa-trash"></i>
+                              </button>
+                            </a>
+                          
+                            </td>
+                          </tr>
+                  {% endif %}
+                          {% if dispositivoMedico.asignacionColor == 'Verde' %}
+                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(0, 255, 72);">
+                            <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.registro_invima}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.numero_lote}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.presentacion_comercial}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.forma_farmaceutica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.principio_activo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.unidad_medica}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.porcentaje}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.temperatura}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.riesgo}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.cantidad}}</b></td>
+                            <td style="color:Black;"><b>{{dispositivoMedico.codigo}}</b></td>
+                            <td style="background-color:rgb(255, 255, 255);">
+                    </div>
+                  </div>
+                            <a href="{% url 'actualizarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Actualizar Dispositivo Medicó">
+                              <button class="btn btn-primary btn-sm">
+                              <i class="fa fa-edit"></i>
+                              </button>
+                            </a>
+                            <a href="{% url 'eliminarDispositivoMedico' dispositivoMedico.id %}"  data-toggle="tooltip" title="Eliminar Dispositivo Medicó">
+                              <button class="btn btn-danger btn-sm">
+                              <i class="fa fa-trash"></i>
+                              </button>
+                            </a>
+                          
+                            </td>
+                          </tr>
+                  {% endif %}
+
+                  </tbody>
+                  {% endfor %}
+                  {% else %}
+                  <h1 class="black-color">No hay dispositivos medicós registrados</h1>
+                  {% endif %}
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- manejo del Ajax para generar consultas por filtro -->
+  <script type="text/JavaScript" src="{% static 'js/ajax/buscar.js' %}"></script>
+  <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
+  <script >
+    $(document).ready(function(){
+      $("#messages").fadeOut(3500);
+      })
+  </script>
+</body>
+
+{% endblock %}

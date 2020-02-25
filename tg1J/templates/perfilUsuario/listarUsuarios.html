@@ -1,0 +1,147 @@
+{% extends 'base/base.html' %}
+{% block main %}
+{% load bootstrap4 %}
+{% load staticfiles i18n %}
+
+ <!--para que el mensaje de validación desaparesca automaticamente la url-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<body>
+  <div class="container">
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow mb-4">
+    
+            <!-- mensaje de validación de creacion de Usuario-->
+            {% if messages %}
+      
+            {% for message in messages %}
+                
+                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:50px;">
+                  <h1 {% if mesage.tags == "success" %} class="alert alert-sucess "{% endif %}>{{ message }}</h1>
+                </div>
+                <br>
+            {% endfor %}
+
+
+            {% endif %}
+
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Lista de usuarios registrados</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+            <!-- Búsqueda en la barra superior-->
+          <form method="get" action="{% url 'buscar' %}" id="buscar_perfilUsuario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input type="text" name="identificacion" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" title="Buscar" >
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="dataTables_length" id="dataTable_length"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div id="dataTable_filter" class="dataTables_filter"></div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
+                        role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                        <thead>
+                          <tr role="row">
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Distribuidor: activate to sort column ascending" style="width: 157px;">Nombres
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Nickname: activate to sort column ascending" style="width: 90px;">Apellidos
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Email: activate to sort column ascending" style="width: 90px;">Email
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Tipo Identificacion
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Identificacion
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Es red: activate to sort column ascending" style="width: 90px;">Telefono
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Sexo
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                              aria-label="Acciones: activate to sort column ascending" style="width: 157px;">Acciones
+                            </th>
+                         
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                        
+                        <tbody> 
+                          <!-- funcion para proyectar los campos con los nombres correspondientes -->
+                          {% if object_list %}
+                          {% for perfilUsuario in object_list %}
+                         
+                          <tr role="row" class="odd" id="registro_item">
+                            
+                            <td>{{perfilUsuario.first_name}}</td>
+                            <td>{{perfilUsuario.last_name}}</td>
+                            <td>{{perfilUsuario.email}}</td>
+                            <td>{{perfilUsuario.tipo_identificacion}}</td>
+                            <td>{{perfilUsuario.identificacion}}</td>
+                            <td>{{perfilUsuario.telefono}}</td>
+                            <td>{{perfilUsuario.sexo}}</td>
+                            <td>
+                    </div>
+                  </div>
+                          <a href="{% url 'actualizarUsuario' user.id %}" data-toggle="tooltip" title="Actualizar Usuario">
+                            <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-edit"></i>
+                            </button>
+                          </a>
+                          <a href="{% url 'eliminarUsuario' user.id %}" data-toggle="tooltip" title="Eliminar Usuario">
+                            <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                          </a>
+                            
+                            </td>
+                          </tr>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h1 class="black-color">No hay usuarios registrados</h1>
+                        {% endif %}    
+                        </tbody>
+                                
+                  
+                      </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- manejo del Ajax para generar consultas por filtro -->
+  <script type="text/JavaScript" src="{% static 'js/ajax/buscar.js' %}"></script>
+  <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
+  <script >
+    $(document).ready(function(){
+      $("#messages").fadeOut(3500);
+      })
+  </script>
+ 
+</body>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{%load staticfiles %}
+{% block main %}
+{% load bootstrap4 %}
+<!--para que el mensaje de validación desaparesca automaticamente la url-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<body>   
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5" id="centrado">
+            <div class="card-body p-0">
+                <div class="row">                
+                    <div class="col-1"></div>
+                    <div class="col-10">
+                        <div class="p-5">
+                            <!-- mensaje de validación de creacion de Usuario-->
+                            {% if messages %}
+                    
+                            {% for message in messages %}
+                                
+                                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:50px;">
+                                <h1 {% if mesage.tags == "success" %} class="alert alert-sucess "{% endif %}>{{ message }}</h1>
+                                </div>
+                                <br>
+                            {% endfor %}
+
+
+                            {% endif %}
+                            <div class="text-center" >
+                                <h1 class="h4 text-gray-900 mb-4">	<datagrid>¿Desea eliminar el registro del Dispositivo Medicó {{ object.nombre }}?</datagrid></h1>
+                            </div>
+                            <form  method="POST">   
+                                <div class="form-group">            
+                                    {% csrf_token %}
+                                </div>
+                                <button type="submit" class="btn btn-success btn-danger btn-user btn-block">Si, Eliminar Dispositivo Medicó</button>
+                                <a class="btn btn-default" href="{% url 'listarDispositivosMedicos' %}">Cancelar</a>
+                            </form>           
+                        </div>                      
+                        <div class="col-1"></div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- manejo del Ajax para generar consultas por filtro -->
+ <script type="text/JavaScript" src="{% static 'js/ajax/dispositivoMedico.js' %}"></script>
+ <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
+  <script >
+    $(document).ready(function(){
+      $("#messages").fadeOut(3500);
+      })
+  </script>
+ 
+</body>
+{% endblock %}
+

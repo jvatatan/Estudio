@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+{%load staticfiles %}
+{% block main %}
+{% load bootstrap4 %}
+<div class="text-center" >
+    <h1 class="h4 text-gray-900 mb-4">	<datagrid>BIENVENIDO {{ request.user.first_name }} A NUESTRA APLICACIÓN PARA EL CONTROL DE LA SEMAFORIZACIÓN DE LA CLÍNICA ODONTOLOGÍCA JVA </datagrid></h1>
+</div>
+{% endblock %}
