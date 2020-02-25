@@ -19,7 +19,7 @@
                     
                             {% for message in messages %}
                                 
-                                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:50px;">
+                                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:100px;">
                                 <h1 {% if mesage.tags == "success" %} class="alert alert-sucess "{% endif %}>{{ message }}</h1>
                                 </div>
                                 <br>
@@ -28,7 +28,7 @@
 
                             {% endif %}
                             <div class="text-center" >
-                                <h1 class="h4 text-gray-900 mb-4">	<datagrid>Crear Medicamento.</datagrid></h1>
+                                <h1 class="h4 text-gray-900 mb-4">	<datagrid>Registrar Medicamento.</datagrid></h1>
                             </div>
                             <form  method="POST" >
                                 <div class="form-group">
@@ -37,7 +37,7 @@
                                 <!-- boton para confirmar su registro del Medicamento y la cancelacion de el -->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar Usuario</a>
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar Medicamento</a>
                                 <a class="btn btn-default" href="{% url 'indexWelcome' %}">Cancelar</a>
 
                                 <!-- Mensaje de confirmacion de su registro de Medicamento-->
@@ -50,7 +50,7 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                         </div>
-                                        <div class="modal-body">Seleccione "Guardar Medicamento" a continuación si está listo para finalizar su Registro.</div>
+                                        <div class="modal-body">Seleccione "Guardar Medicamento" a continuación si está listo para finalizar su registro.</div>
                                         <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                                         <button type="submit" class="btn btn-primary  btn-user btn-block">Guardar Medicamento</button>

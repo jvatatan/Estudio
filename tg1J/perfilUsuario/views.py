@@ -111,7 +111,7 @@ class CuentaCreateLogin(LoginRequiredMixin, CreateView):
             user = form.save(commit=False)
         
             user.save()
-            messages.success(request, 'La creacion de cuenta para el Usuario'+ user.first_name + 'fue registrada exitosamente')
+            messages.success(request, 'La creacion de cuenta para el Usuario '+ user.first_name + ' fue registrada exitosamente')
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -141,7 +141,7 @@ class UsuarioCreate(LoginRequiredMixin, CreateView):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            messages.success(request, 'El Usuario'+ user.first_name + 'fue registrado exitosamente')
+            messages.success(request, 'El Usuario ' + user.first_name + ' fue registrado exitosamente')
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -155,7 +155,7 @@ class UsuarioList(LoginRequiredMixin,ListView):
     template_name = 'perfilUsuario/listarUsuarios.html'
 
     def get_success_url(self):
-        messages.success(self.request, "Lista de usuarios actualizadad exitosamente.")
+        messages.success(self.request, 'El Usuario ' + self.object.first_name +'fue listado exitosamente.')
         return super().get_success_url()
 
     
@@ -187,7 +187,7 @@ class UsuarioUpdate(LoginRequiredMixin,UpdateView):
         form = self.form_class(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'El usuario'+ user.first_name + 'fue actualizado exitosamente')
+            messages.success(request, 'El usuario '+ user.first_name + ' fue modificado exitosamente')
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
@@ -204,7 +204,7 @@ class UsuarioDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('listarUsuarios')
 
     def get_success_url(self):
-        messages.success(self.request, 'Usuario' + User.first_name + 'fue eliminado exitosamente.')
+        messages.success(self.request, 'El Usuario ' + self.object.first_name + ' fue eliminado exitosamente.')
         return super().get_success_url()
 
 
@@ -228,8 +228,9 @@ def userLogin(request):
                     return HttpResponseRedirect(reverse('indexWelcome'))
                 else:
                     print("2")
+                    enviarMensaje(request)
                     if request.GET.get('next', None):
-                        enviarMensaje(request)
+                        print("333")
                         return HttpResponseRedirect(request.GET['next'])
                     return HttpResponseRedirect(reverse('indexWelcome'))
             else:
@@ -276,11 +277,17 @@ def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
 def enviarMensaje(request):
         correos = User.objects.all()
         correosFinal =list()
+        message = ""
+        if not construirString():
+            message = "El o los  dispositivos medicos " + construirStringDispositivos() + " se encuentra en estado ROJO para vencer, por favor estar atentos."
+        if not construirStringDispositivos():
+            message = "El o los  medicamentos " + construirString() + " se encuentra en estado ROJO para vencer, por favor estar atentos."
+
         for object in correos:
                 correosFinal = object.email
                 email_message = EmailMessage(
                 subject='Cambio de estado',
-                body='El o los medicamentos y dispositivos medicos'+ construirString() + construirStringDispositivos() +' se encuentra en estado ROJO para vencer, por favor estar atentos',
+                body=message,
                 from_email='clinicajva@gmail.com',
                 to=[correosFinal],
         )

@@ -71,7 +71,6 @@ class MedicamentoCreate(LoginRequiredMixin, CreateView):
     model = Medicamento
     form_class = MedicamentoForm
     template_name = 'medicamentos/crearMedicamento.html'
-    #messages.success(request, 'El Medicamento'+ Medicamento.nombre + 'fue Registrado con Exito')
     success_url = reverse_lazy('listarMedicamentos')
 
 
@@ -106,7 +105,7 @@ class MedicamentoCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request,  'El Medicamento'+ self.object.nombre + 'fue Registrado con Exitosamente.')
+        messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue Registrado Exitosamente.')
         return super().get_success_url()
     
         
@@ -118,6 +117,11 @@ class MedicamentoList(LoginRequiredMixin, ListView):
     model = Medicamento
     template_name = 'medicamentos/listarMedicamentos.html'
 
+    
+    def get_success_url(self):
+        messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue listado Exitosamente.')
+        return super().get_success_url()
+
 class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
 
     login_url = '/login/'
@@ -126,7 +130,6 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
     model = Medicamento
     form_class = MedicamentoForm
     template_name = 'medicamentos/actualizarMedicamento.html'
-    #messages.success(request, 'El Medicamento'+ Medicamento.nombre + 'fue Actualizado con Exito')
     success_url = reverse_lazy('listarMedicamentos')
 
     def form_valid(self, form):
@@ -138,26 +141,21 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
         startLoc = 0
         endLoc = 3
         diasString = diasString[startLoc: endLoc]
-        print(diasFaltantes)
-        print(int(diasString))
-        print("color")
         if  int(diasString) > 0  and int(diasString) <= 90:
-            print(self.object.asignacionColor)
-            self.object.asignacionColor = 'Rojo'
-            print(self.object.asignacionColor)
-            self.object.save()
-            print(self.object.asignacionColor)
-            print("yo soy rojo")
+            self.object.asignacionColor = 'Rojo'   
+            self.object.save()   
         elif int(diasString) > 90 and int(diasString) <= 180:
             self.object.asignacionColor = 'Amarillo'
-            self.object.save()
-            print("soy amarillo")
+            self.object.save()  
         else:
             self.object.asignacionColor = 'Verde' 
             self.object.save()
-            print("soy verde")
         #actualizarColor(self.object.id)
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue Modificado Exitosamente.')
+        return super().get_success_url()
 
 class MedicamentoDelete(LoginRequiredMixin, DeleteView):
 
@@ -166,8 +164,12 @@ class MedicamentoDelete(LoginRequiredMixin, DeleteView):
     raise_exception = False
     model = Medicamento
     template_name = 'medicamentos/eliminarMedicamento.html'
-    #messages.success(request, 'El Medicamento'+ Medicamento.nombre + 'fue Eliminado con Exito')
     success_url = reverse_lazy('listarMedicamentos')
+
+    
+    def get_success_url(self):
+        messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue Eliminado Exitosamente.')
+        return super().get_success_url()
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarMedicamento(request):

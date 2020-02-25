@@ -64,7 +64,6 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
     model = DispositivoMedico
     form_class = DispositivoMedicoForm
     template_name = 'dispositivoMedico/crearDispositivoMedico.html'
-    #messages.success(request,'Dispositivo Medico Creado con Exito')
     success_url = reverse_lazy('listarDispositivosMedicos')
 
     def form_valid(self, form):
@@ -97,7 +96,7 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
         
     def get_success_url(self):
-        messages.success(self.request,'El Dispositivo Medicó'+ self.object.nombre +'fue Registrado con Exitosamente.')
+        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue Registrado Exitosamente.')
         return super().get_success_url()    
 
 class DispositivoMedicoList(LoginRequiredMixin, ListView):
@@ -108,6 +107,10 @@ class DispositivoMedicoList(LoginRequiredMixin, ListView):
     model = DispositivoMedico
     template_name = 'dispositivoMedico/listarDispositivosMedicos.html'
 
+    def get_success_url(self):
+        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue listado Exitosamente.')
+        return super().get_success_url() 
+
 class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
 
     login_url = '/login/'
@@ -116,7 +119,6 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
     model = DispositivoMedico
     form_class = DispositivoMedicoForm
     template_name = 'dispositivoMedico/actualizarDispositivoMedico.html'
-    #messages.success(request,'Dispositivo Medico Actualizado con Exito')
     success_url = reverse_lazy('listarDispositivosMedicos')
 
     def form_valid(self, form):
@@ -149,6 +151,11 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
         #actualizarColor(self.object.id)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue modificado Exitosamente.')
+        return super().get_success_url() 
+        
+
 class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
 
     login_url = '/login/'
@@ -157,8 +164,11 @@ class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
     model = DispositivoMedico
     form_class = DispositivoMedicoForm
     template_name = 'dispositivoMedico/eliminarDispositivoMedico.html'
-    #messages.success(request,'Dispositivo Medico Eliminado con Exito')
     success_url = reverse_lazy('listarDispositivosMedicos')
+
+    def get_success_url(self):
+        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue eliminado Exitosamente.')
+        return super().get_success_url() 
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarDispositivoMedico(request):
