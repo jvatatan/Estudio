@@ -31,16 +31,17 @@
             <div class="card-body">
               <div class="table-responsive">
                  <!-- Búsqueda en la barra superior-->
-                <form method="get" action="{% url 'buscarMedicamento' %}" id="buscar_medicamento" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
+                <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" name="asignacionColor" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
+                    <input type="text" name="asignacionColor" id= "buscar_medicamento" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                      <button class="btn btn-primary" type="submit" title="Buscar">
+                      <button class="btn btn-primary" onclick="medicamento()" type="button" title="Buscar">
                         <i class="fas fa-search fa-sm"></i>
                       </button>
                     </div>
                   </div>
-                </form>
+                </div>
+                
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                   <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -253,7 +254,28 @@
   </div>
 
     <!-- manejo del Ajax para generar consultas por filtro -->
-    <script type="text/JavaScript" src="{% static 'js/ajax/buscar.js' %}"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      function medicamento(){
+        
+
+        buscar_medicamento = document.getElementById("buscar_medicamento").innerHTML
+        console.log(buscar_medicamento)
+        $.ajax({
+            url:"/medicamentos/buscarMedicamento/",
+            type:"GET",
+            data:{
+                asignacionColor : buscar_medicamento,
+            },
+            success: function(json){
+                console.log("ntro");
+                console.log(json);
+              
+            }
+        })
+      }
+    </script>
     <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >
     $(document).ready(function(){

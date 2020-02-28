@@ -32,7 +32,8 @@ urlpatterns = [
     url(r'^login/', userLogin, name="userLogin"),
 	url(r'^success/', success, name="userSuccess"),
 	url(r'^logout/', userLogout, name="userLogout"),
-    path('', TemplateView.as_view(template_name='login.html'), name='login'),   
+    path('', TemplateView.as_view(template_name='login.html'), name='login'),  
+    #recuperacion de contraseña 
     url(
         r'^password/recovery/$',
         auth_views.PasswordResetView.as_view(
@@ -49,7 +50,7 @@ urlpatterns = [
         ),
         name='password_reset_done',
     ),
-     url(
+    url(
         r'^password/recovery/(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.PasswordResetConfirmView.as_view(
@@ -63,6 +64,8 @@ urlpatterns = [
         name='password_reset_confirm',
     ),
 
+   
 
 
 ]
+

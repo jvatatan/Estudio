@@ -9,6 +9,8 @@ from django.core import serializers
 import json
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers.json import DjangoJSONEncoder
+
 # Create your views here.
 
 def index(request):
@@ -173,14 +175,16 @@ class MedicamentoDelete(LoginRequiredMixin, DeleteView):
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarMedicamento(request):
+    if request.is_ajax:
+        if request.method == 'GET':
+            asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
+            medicamentos = Medicamento.objects.filter(asignacionColor__startswith=asignacionColor) #lista de objectos medicamentos
+            medicamentos = [ medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
+            return HttpResponse(json.dumps(medicamentos,cls=DjangoJSONEncoder), content_type='application/json')
+    
+      
    
-    asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
-    #select * from medicamentos where asgnacionColor='asignacionColor'
-    #select * from medicamentos where asgnacionColor like '%asignacionColor'
-    medicamentos = Medicamento.objects.filter(asignacionColor__startswith=asignacionColor) #lista de objectos medicamentos
-    medicamentos = [ medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
-    #success_url = reverse_lazy('listarMedicamentos')
-    return HttpResponse(json.dumps(medicamentos), content_type='application/json')
+    
 
 def medicamento_serializer(medicamento):
     return {'id': medicamento.id, 'nombre': medicamento.nombre, 'fabricado_por': medicamento.fabricado_por, 'registro_invima': medicamento.registro_invima,
@@ -189,4 +193,3 @@ def medicamento_serializer(medicamento):
 
 
 
- 
