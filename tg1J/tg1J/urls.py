@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^login/', userLogin, name="userLogin"),
 	url(r'^success/', success, name="userSuccess"),
 	url(r'^logout/', userLogout, name="userLogout"),
-    path('', TemplateView.as_view(template_name='login.html'), name='login'),  
+    path('', TemplateView.as_view(template_name='login.html'), name='userLogin'),  
     #recuperacion de contraseña 
     url(
         r'^password/recovery/$',

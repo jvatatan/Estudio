@@ -55,7 +55,7 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Registrar Usuario.</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Crear cuenta de usuario.</h1>
                   </div>
                     <form class="user" method="POST" >
                         <div class="form-group">
@@ -65,8 +65,8 @@
                         <!-- boton para confirmar su registro de cuenta y la cancelacion de ella -->
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar Usuario</a>
-                        <a class="btn btn-default" href="{% url 'templates/login' %}">Cancelar</a>
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar cuenta</a>
+                        <a class="btn btn-default" href="{% url 'userLogout' %}">Cancelar</a>
 
                         <!-- Mensaje de confirmacion de su registro de cuenta-->
                         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -78,10 +78,10 @@
                                     <span aria-hidden="true">×</span>
                                 </button>
                                 </div>
-                                <div class="modal-body">Seleccione "Guardar Usuario" a continuación si está listo para finalizar su Registro.</div>
+                                <div class="modal-body">Seleccione "Guardar cuenta" a continuación si está listo para finalizar su registro.</div>
                                 <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary  btn-user btn-block">Guardar Usuario</button>
+                                <button type="submit" class="btn btn-primary  btn-user btn-block">Guardar Cuenta</button>
                                 </div>
                             </div>
                             </div>

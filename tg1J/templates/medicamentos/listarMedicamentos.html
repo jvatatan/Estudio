@@ -108,7 +108,7 @@
                             {% if object_list %}
                             {% for medicamentos in object_list %}
                             {% if medicamentos.asignacionColor == 'Rojo' %}
-                            <tr role="row" class="odd" id="registro_item" style="background-color:rgb(255, 30, 30);">
+                            <tr role="row" class="odd" id="registro_itemRojo" style="background-color:rgb(255, 30, 30);">
                               <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -141,7 +141,7 @@
                     {% endif %}
                             {% if medicamentos.asignacionColor == 'Amarillo' %}
 
-                            <tr role="row" class="odd" id="registro_item" style="background-color:rgb(239, 251, 0);">
+                            <tr role="row" class="odd" id="registro_itemAmarillo" style="background-color:rgb(239, 251, 0);">
                                 <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                                 <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                                 <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -174,7 +174,7 @@
                     {% endif %}
                               {% if medicamentos.asignacionColor == 'Verde' %}
 
-                            <tr role="row" class="odd" id="registro_item" style="background-color:rgb(0, 255, 72);">
+                            <tr role="row" class="odd" id="registro_itemVerde" style="background-color:rgb(0, 255, 72);">
                               <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -207,7 +207,7 @@
                     {% endif %}
                           {% if medicamentos.asignacionColor == 'Blanco' %}
 
-                    <tr role="row" class="odd" id="registro_item" style="background-color:rgb(250, 250, 250);">
+                    <tr role="row" class="odd" id="registro_itemBlanco" style="background-color:rgb(250, 250, 250);">
                       <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                       <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                       <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -259,22 +259,54 @@
     <script type="text/javascript">
       function medicamento(){
         
-
-        buscar_medicamento = document.getElementById("buscar_medicamento").innerHTML
-        console.log(buscar_medicamento)
+        buscar_medicamento = document.getElementById("buscar_medicamento").value
         $.ajax({
             url:"/medicamentos/buscarMedicamento/",
             type:"GET",
             data:{
-                asignacionColor : buscar_medicamento,
+               asignacionColor : buscar_medicamento,
             },
             success: function(json){
-                console.log("ntro");
                 console.log(json);
-              
+                /*
+                $('#registro_itemRojo').empty();
+                $('#registro_itemAmarillo').empty();
+                $('#registro_itemVerde').empty();
+                $('#registro_itemBlanco').empty();
+*/
+                for(var i=0; i<=json.length-1; i++){//13
+                  console.log(i);
+                    if(json[i]['asignacionColor']==buscar_medicamento){
+                      var colorActual = buscar_medicamento;
+                      if(colorActual=="Rojo"){
+                        $('#registro_itemAmarillo').empty();
+                        $('#registro_itemVerde').empty();
+                        $('#registro_itemBlanco').empty();     
+                      }
+                      if(colorActual=="Verde"){
+                        $('#registro_itemAmarillo').empty();
+                        $('#registro_itemRojo').empty();
+                        $('#registro_itemBlanco').empty();     
+                      }
+                      if(colorActual=="Amarillo"){
+                        $('#registro_itemRojo').empty();
+                        $('#registro_itemVerde').empty();
+                        $('#registro_itemBlanco').empty();     
+                      }
+                      if(colorActual=="Blanco"){
+                        $('#registro_itemAmarillo').empty();
+                        $('#registro_itemVerde').empty();
+                        $('#registro_itemRojo').empty();     
+                      } 
+
+                    }
+                }
+
             }
         })
       }
+
+     
     </script>
     <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >

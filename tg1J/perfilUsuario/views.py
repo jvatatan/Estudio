@@ -21,7 +21,10 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from perfilUsuario.models import User
+
+
 # Create your views here.
+@login_required(login_url='/login/')
 def indexWelocome(request):
     return render(request, 'paginaInicio/inicio.html')
 
@@ -88,15 +91,12 @@ def eliminarUsuario(request, id_user):
 
  """
 #esta clase es cuando me voy a registrar y no tengo cuenta en el login        
-class CuentaCreateLogin(LoginRequiredMixin, CreateView):
-    login_url = '/login/'
-    redirect_field_name = '/login/'
-    raise_exception = False
- 
+class CuentaCreateLogin(CreateView):
+    
     model = User
     template_name = 'autentificacion/crearCuenta.html'
     form_class = UserForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('autentificacion/login')
 
     def get_context_data(self, **kwargs):
         context = super(CuentaCreateLogin, self).get_context_data(**kwargs)

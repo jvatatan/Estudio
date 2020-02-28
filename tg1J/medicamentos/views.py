@@ -178,7 +178,7 @@ def buscarMedicamento(request):
     if request.is_ajax:
         if request.method == 'GET':
             asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
-            medicamentos = Medicamento.objects.filter(asignacionColor__startswith=asignacionColor) #lista de objectos medicamentos
+            medicamentos = Medicamento.objects.filter() #lista de objectos medicamentos
             medicamentos = [ medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
             return HttpResponse(json.dumps(medicamentos,cls=DjangoJSONEncoder), content_type='application/json')
     
@@ -189,7 +189,7 @@ def buscarMedicamento(request):
 def medicamento_serializer(medicamento):
     return {'id': medicamento.id, 'nombre': medicamento.nombre, 'fabricado_por': medicamento.fabricado_por, 'registro_invima': medicamento.registro_invima,
                 'numero_lote': medicamento.numero_lote, 'presentacion_comercial': medicamento.presentacion_comercial, 'forma_farmaceutica': medicamento.forma_farmaceutica, 'principio_activo': medicamento.principio_activo, 
-                    'unidad_medica': medicamento.unidad_medica, 'porcentaje': medicamento.porcentaje, 'temperatura': medicamento.temperatura, 'cantidad': medicamento.cantidad, 'codigo': medicamento.codigo}
+                    'unidad_medica': medicamento.unidad_medica, 'porcentaje': medicamento.porcentaje, 'temperatura': medicamento.temperatura, 'cantidad': medicamento.cantidad, 'codigo': medicamento.codigo, 'asignacionColor': medicamento.asignacionColor}
 
 
 
