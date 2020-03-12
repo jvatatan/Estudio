@@ -35,8 +35,31 @@
                                 <div class="form-group">
                                     {% csrf_token %}
                                     {% bootstrap_form form %}
+                                <!-- boton para confirmar la modificacion del usuario y la cancelacion de el -->
+                                 <div class="dropdown-divider"></div>
+                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Modificar Usuario</a>
+                                 <a class="btn btn-default" href="{% url 'listarUsuarios' %}">Cancelar</a>
+ 
+                                 <!-- Mensaje de confirmacion de la modificación del registro de usuario-->
+                                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                     <div class="modal-dialog" role="document">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                         <h5 class="modal-title" id="exampleModalLabel">¿Preparado para Guardar la modificación del Usuario exitosamente?</h5>
+                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">×</span>
+                                         </button>
+                                         </div>
+                                         <div class="modal-body">Seleccione "Guardar Usuario" a continuación si está listo para finalizar su registro de modificación.</div>
+                                         <div class="modal-footer">
+                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                         <button type="submit" class="btn btn-primary  btn-user btn-block">Guardar Usuario</button>
+                                         </div>
+                                     </div>
+                                     </div>
+                                 </div>
                                 </div>
-                                <button type="submit" class="btn btn-success  btn-user btn-block">Guardar Usuario Modificado</button>
                             </form>           
                         </div>                      
                         <div class="col-1"></div> 

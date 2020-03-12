@@ -7,7 +7,7 @@ class UserForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		CHOICES = [('Cédula de Ciudadanía', 'Cédula de Ciudadanía'), ('Cédula Extranjera', 'Cédula Extrangera'), ('Pasaporte', 'Pasaporte')]
+		CHOICES = [('Cédula de Ciudadanía', 'Cédula de Ciudadanía'), ('Cédula Extranjeria', 'Cédula Extrangeria'), ('Pasaporte', 'Pasaporte')]
 		CHOICES2 = [('Femenino', 'Femenino'), ('Masculino', 'Masculino'), ('Otro', 'Otro')]
 
 		

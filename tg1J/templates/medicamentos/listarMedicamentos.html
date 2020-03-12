@@ -6,6 +6,9 @@
 <!--para que el mensaje de validación desaparesca automaticamente la url-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+  <!-- libreria para el manejo de Ajax para generar consultas por filtro -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <body>
   <div class="container">
     <div class="card-body p-0">
@@ -31,17 +34,16 @@
             <div class="card-body">
               <div class="table-responsive">
                  <!-- Búsqueda en la barra superior-->
-                <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
+                 <form method="get" action="{% url 'buscarMedicamento' %}" id="buscar_medicamento" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" name="asignacionColor" id= "buscar_medicamento" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
+                    <input type="text" name="asignacionColor" id="buscar_medicam" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2" >
                     <div class="input-group-append">
-                      <button class="btn btn-primary" onclick="medicamento()" type="button" title="Buscar">
+                      <button class="btn btn-primary" type="submit" title="Buscar">
                         <i class="fas fa-search fa-sm"></i>
                       </button>
                     </div>
                   </div>
-                </div>
-                
+                </form>
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                   <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -103,12 +105,12 @@
                         <tfoot>
                         </tfoot>
                           
-                        <tbody>
+                        <tbody id="fila_medicamento">
                           <!-- funcion para la asignacion de color -->
                             {% if object_list %}
                             {% for medicamentos in object_list %}
                             {% if medicamentos.asignacionColor == 'Rojo' %}
-                            <tr role="row" class="odd" id="registro_itemRojo" style="background-color:rgb(255, 30, 30);">
+                            <tr role="row" class="odd" name="registro_itemRojo" style="background-color:rgb(255, 30, 30);">
                               <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -141,7 +143,7 @@
                     {% endif %}
                             {% if medicamentos.asignacionColor == 'Amarillo' %}
 
-                            <tr role="row" class="odd" id="registro_itemAmarillo" style="background-color:rgb(239, 251, 0);">
+                            <tr role="row" class="odd" name="registro_itemAmarillo" style="background-color:rgb(239, 251, 0);">
                                 <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                                 <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                                 <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -174,7 +176,7 @@
                     {% endif %}
                               {% if medicamentos.asignacionColor == 'Verde' %}
 
-                            <tr role="row" class="odd" id="registro_itemVerde" style="background-color:rgb(0, 255, 72);">
+                            <tr role="row" class="odd" name="registro_itemVerde" style="background-color:rgb(0, 255, 72);">
                               <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                               <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -207,7 +209,7 @@
                     {% endif %}
                           {% if medicamentos.asignacionColor == 'Blanco' %}
 
-                    <tr role="row" class="odd" id="registro_itemBlanco" style="background-color:rgb(250, 250, 250);">
+                    <tr role="row" class="odd" name="registro_itemBlanco" style="background-color:rgb(250, 250, 250);">
                       <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
                       <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
                       <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
@@ -243,79 +245,77 @@
                   {% else %}
                   <h1 class="black-color">No hay medicamentos registrados</h1>
                   {% endif %}
-                  </table>
+                  </table>  
+                  
+                 
                 </div>
               </div>
-            </div>
+            </div>         
           </div>
         </div>
       </div>
     </div>
   </div>
 
-    <!-- manejo del Ajax para generar consultas por filtro -->
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      function medicamento(){
-        
-        buscar_medicamento = document.getElementById("buscar_medicamento").value
-        $.ajax({
-            url:"/medicamentos/buscarMedicamento/",
-            type:"GET",
-            data:{
-               asignacionColor : buscar_medicamento,
-            },
-            success: function(json){
-                console.log(json);
-                /*
-                $('#registro_itemRojo').empty();
-                $('#registro_itemAmarillo').empty();
-                $('#registro_itemVerde').empty();
-                $('#registro_itemBlanco').empty();
-*/
-                for(var i=0; i<=json.length-1; i++){//13
-                  console.log(i);
-                    if(json[i]['asignacionColor']==buscar_medicamento){
-                      var colorActual = buscar_medicamento;
-                      if(colorActual=="Rojo"){
-                        $('#registro_itemAmarillo').empty();
-                        $('#registro_itemVerde').empty();
-                        $('#registro_itemBlanco').empty();     
-                      }
-                      if(colorActual=="Verde"){
-                        $('#registro_itemAmarillo').empty();
-                        $('#registro_itemRojo').empty();
-                        $('#registro_itemBlanco').empty();     
-                      }
-                      if(colorActual=="Amarillo"){
-                        $('#registro_itemRojo').empty();
-                        $('#registro_itemVerde').empty();
-                        $('#registro_itemBlanco').empty();     
-                      }
-                      if(colorActual=="Blanco"){
-                        $('#registro_itemAmarillo').empty();
-                        $('#registro_itemVerde').empty();
-                        $('#registro_itemRojo').empty();     
-                      } 
 
-                    }
-                }
 
-            }
-        })
-      }
 
-     
-    </script>
-    <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
+  <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >
     $(document).ready(function(){
       $("#messages").fadeOut(3500);
       })
-  </script>
- 
-</body>
 
+  </script>
+
+  <!-- funcion para inicializar la tabla para la busqueda-->
+  <script >
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+        });
+  </script>
+
+   <!-- manejo del Ajax para generar consultas por filtro -->
+  <script >
+      $(document).ready(function(){
+          $("#buscar_medicamento").submit(function(e){
+              e.preventDefault();
+              buscar_medicam = document.getElementById("buscar_medicam").value
+              $.ajax({
+                  url: $(this).attr('action'),
+                  type: $(this).attr('method'),
+                  data: $(this).serialize(),
+      
+                  success: function(json){
+                      var colorActual = buscar_medicam;
+                      if(colorActual=="Rojo"){
+                      $("#dataTable").find("tr:not([name=registro_itemRojo])").each(function(){
+                      $(this).remove();              
+                      });
+                      }
+                      if(colorActual=="Verde"){
+                        $("#dataTable").find("tr:not([name=registro_itemVerde])").each(function(){
+                        $(this).remove();              
+                      });    
+                      }
+                      if(colorActual=="Amarillo"){
+                        $("#dataTable").find("tr:not([name=registro_itemAmarillo])").each(function(){
+                       $(this).remove();              
+                      });   
+                      }
+                      if(colorActual=="Blanco"){
+                        $("#dataTable").find("tr:not([name=registro_itemBlanco])").each(function(){
+                       $(this).remove();              
+                      });    
+                      } 
+                      
+                  }
+              })
+          })
+      })
+      
+  </script>
+  
+</body>
 
 {% endblock %}

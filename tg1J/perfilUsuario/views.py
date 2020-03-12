@@ -90,13 +90,18 @@ def eliminarUsuario(request, id_user):
     return render(request, 'perfilUsuario/eliminarUsuario.html', contexto)
 
  """
+
+# Create your views here.
+
+def indexLogin(request):
+    return render(request, 'autentificacion/login.html')
 #esta clase es cuando me voy a registrar y no tengo cuenta en el login        
 class CuentaCreateLogin(CreateView):
     
     model = User
     template_name = 'autentificacion/crearCuenta.html'
     form_class = UserForm
-    success_url = reverse_lazy('autentificacion/login')
+    success_url = reverse_lazy('userLogin')
 
     def get_context_data(self, **kwargs):
         context = super(CuentaCreateLogin, self).get_context_data(**kwargs)
@@ -151,7 +156,7 @@ class UsuarioList(LoginRequiredMixin,ListView):
     login_url = '/login/'
     redirect_field_name = '/login/'
     raise_exception = False
-    model = User                                    
+    model = User                                 
     template_name = 'perfilUsuario/listarUsuarios.html'
 
     def get_success_url(self):
@@ -228,7 +233,7 @@ def userLogin(request):
                     return HttpResponseRedirect(reverse('indexWelcome'))
                 else:
                     print("2")
-                    enviarMensaje(request)
+                   # enviarMensaje(request)
                     if request.GET.get('next', None):
                         print("333")
                         return HttpResponseRedirect(request.GET['next'])
@@ -248,7 +253,7 @@ def success(request):
 def userLogout(request):
 
 		logout(request)
-		return HttpResponseRedirect(reverse('userLogin'))
+		return HttpResponseRedirect(reverse('indexLogin'))
 
 #--------------------función para el envio de la notificacion al email de medicamento proximo a vencer------------------------
 def construirString():
@@ -308,7 +313,7 @@ def buscar(request):
 
 def user_serializer(user):
     return {'id': user.id,'name': user.first_name,'tipo_usuario': user.tipo_usuario, 'tipo_identificacion': user.tipo_identificacion,
-                'identificacion': user.identificacion, 'telefono': user.telefono, 'sexo': user.sexo}
+                'identificacion': user.identificacion,  'email': user.email, 'telefono': user.telefono, 'sexo': user.sexo}
                 
     
 

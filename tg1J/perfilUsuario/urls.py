@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'listarUsuarios', UsuarioList.as_view(), name='listarUsuarios'),
     url(r'actualizarUsuario/(?P<pk>\d+)/$', UsuarioUpdate.as_view(), name='actualizarUsuario'),
     url(r'eliminarUsuario/(?P<pk>\d+)/$', UsuarioDelete.as_view(), name='eliminarUsuario'),
+    url(r'^indexLogin/', indexLogin, name="indexLogin"),
     url(r'^buscar/', buscar, name="buscar"),
 
     #url(r'crearUsuario', crearUsuario, name='crearUsuario'),

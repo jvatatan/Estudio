@@ -54,7 +54,7 @@ urlpatterns = [
         r'^password/recovery/(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.PasswordResetConfirmView.as_view(
-            #success_url=reverse_lazy('home'),
+            success_url=reverse_lazy('home'),
             post_reset_login=True,
             template_name='registrar/password_reset_confirm.html',
             post_reset_login_backend=(

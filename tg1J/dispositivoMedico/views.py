@@ -105,6 +105,7 @@ class DispositivoMedicoList(LoginRequiredMixin, ListView):
     redirect_field_name = '/login/'
     raise_exception = False
     model = DispositivoMedico
+    queryset= model.objects.order_by('nombre')  
     template_name = 'dispositivoMedico/listarDispositivosMedicos.html'
 
     def get_success_url(self):
@@ -184,4 +185,4 @@ def buscarDispositivoMedico(request):
 def dispositivoMedico_serializer(dispositivoMedico):
     return {'id': dispositivoMedico.id, 'nombre': dispositivoMedico.nombre, 'fabricado_por': dispositivoMedico.fabricado_por, 'registro_invima': dispositivoMedico.registro_invima,
                 'numero_lote': dispositivoMedico.numero_lote, 'presentacion_comercial': dispositivoMedico.presentacion_comercial, 'forma_farmaceutica': dispositivoMedico.forma_farmaceutica, 'principio_activo': dispositivoMedico.principio_activo, 
-                    'unidad_medica': dispositivoMedico.unidad_medica, 'porcentaje': dispositivoMedico.porcentaje, 'temperatura': dispositivoMedico.temperatura, 'riesgo': dispositivoMedico.riesgo, 'cantidad': dispositivoMedico.cantidad, 'codigo': dispositivoMedico.codigo}
+                    'unidad_medica': dispositivoMedico.unidad_medica, 'porcentaje': dispositivoMedico.porcentaje, 'temperatura': dispositivoMedico.temperatura, 'riesgo': dispositivoMedico.riesgo, 'cantidad': dispositivoMedico.cantidad, 'codigo': dispositivoMedico.codigo, 'asignacionColor': dispositivoMedico.asignacionColor}

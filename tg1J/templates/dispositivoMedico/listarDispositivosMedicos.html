@@ -33,10 +33,10 @@
                  <!-- Búsqueda en la barra superior-->
                  <form method="get" action="{% url 'buscarDispositivoMedico' %}" id="buscar_dispositivoMedico" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" name="asignacionColor" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
+                    <input type="text" name="asignacionColor" id="buscar_dispostivo" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2" >
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit" title="Buscar">
-                        <i class="fas fa-search fa-sm"></i>
+                          <i class="fas fa-search fa-sm"></i>
                       </button>
                     </div>
                   </div>
@@ -105,12 +105,12 @@
                         <tfoot>
                         </tfoot>
                           
-                        <tbody>
+                        <tbody id="fila_dispositivo">
                           <!-- funcion para la asignacion de color -->
                             {% if object_list %}
                             {% for dispositivoMedico in object_list %}
                             {% if dispositivoMedico.asignacionColor == 'Rojo' %}
-                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(255, 30, 30);">
+                          <tr role="row" class="odd" name="registro_itemRojo" style="background-color:rgb(255, 30, 30);">
                             <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
@@ -143,7 +143,7 @@
                           </tr>
                           {% endif %}
                           {% if dispositivoMedico.asignacionColor == 'Amarillo' %}
-                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(239, 251, 0);">
+                          <tr role="row" class="odd" name="registro_itemAmarillo" style="background-color:rgb(239, 251, 0);">
                             <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
@@ -174,9 +174,9 @@
                           
                             </td>
                           </tr>
-                  {% endif %}
+                          {% endif %}
                           {% if dispositivoMedico.asignacionColor == 'Verde' %}
-                          <tr role="row" class="odd" id="registro_item" style="background-color:rgb(0, 255, 72);">
+                          <tr role="row" class="odd" name="registro_itemVerde" style="background-color:rgb(0, 255, 72);">
                             <td style="color:Black;"><b>{{dispositivoMedico.nombre}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fecha_vencimiento}}</b></td>
                             <td style="color:Black;"><b>{{dispositivoMedico.fabricado_por}}</b></td>
@@ -207,8 +207,39 @@
                           
                             </td>
                           </tr>
+                          {% endif %}
+                          {% if medicamentos.asignacionColor == 'Blanco' %}
+                          <tr role="row" class="odd" id="registro_itemBlanco" style="background-color:rgb(250, 250, 250);">
+                            <td style="color:Black;"><b>{{medicamentos.nombre}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.fecha_vencimiento}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.fabricado_por}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.registro_invima}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.numero_lote}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.presentacion_comercial}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.forma_farmaceutica}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.principio_activo}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.unidad_medica}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.porcentaje}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.temperatura}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.cantidad}}</b></td>
+                            <td style="color:Black;"><b>{{medicamentos.codigo}}</b></td>
+                            <td style="background-color:rgb(255, 255, 255);">
+                    </div>
+                  </div>                       
+                          <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
+                            <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-edit"></i>
+                            </button>
+                          </a>
+                          <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
+                            <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                          </a>
+                          
+                  </td>
+                  </tr>  
                   {% endif %}
-
                   </tbody>
                   {% endfor %}
                   {% else %}
@@ -223,14 +254,65 @@
       </div>
     </div>
   </div>
+
+  <!-- libreria para el manejo de Ajax para generar consultas por filtro -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
-  <!-- manejo del Ajax para generar consultas por filtro -->
-  <script type="text/JavaScript" src="{% static 'js/ajax/buscar.js' %}"></script>
   <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >
     $(document).ready(function(){
       $("#messages").fadeOut(3500);
       })
+  </script>
+  <!-- funcion para inicializar la tabla para la busqueda-->
+  <script >
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+        });
+  </script>
+  
+
+  <!-- manejo del Ajax para generar consultas por filtro-->
+  <script >
+    $(document).ready(function(){
+        $("#buscar_dispositivoMedico").submit(function(e){
+            e.preventDefault();
+            buscar_dispositivo = document.getElementById("buscar_dispostivo").value
+            
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+    
+                success: function(json){
+                    
+                      var colorActual = buscar_dispositivo;
+                      if(colorActual=="Rojo"){
+                      $("#dataTable").find("tr:not([name=registro_itemRojo])").each(function(){
+                      $(this).remove();              
+                      });
+                      }
+                      if(colorActual=="Verde"){
+                        $("#dataTable").find("tr:not([name=registro_itemVerde])").each(function(){
+                        $(this).remove();              
+                      });    
+                      }
+                      if(colorActual=="Amarillo"){
+                        $("#dataTable").find("tr:not([name=registro_itemAmarillo])").each(function(){
+                       $(this).remove();              
+                      });   
+                      }
+                      if(colorActual=="Blanco"){
+                        $("#dataTable").find("tr:not([name=registro_itemBlanco])").each(function(){
+                       $(this).remove();              
+                      });    
+                      } 
+                    
+                }
+            })
+        })
+    })
+    
   </script>
 </body>
 

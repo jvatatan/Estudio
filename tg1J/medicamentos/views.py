@@ -117,6 +117,7 @@ class MedicamentoList(LoginRequiredMixin, ListView):
     redirect_field_name = '/login/'
     raise_exception = False
     model = Medicamento
+    queryset= model.objects.order_by('nombre')  
     template_name = 'medicamentos/listarMedicamentos.html'
 
     
@@ -178,7 +179,7 @@ def buscarMedicamento(request):
     if request.is_ajax:
         if request.method == 'GET':
             asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
-            medicamentos = Medicamento.objects.filter() #lista de objectos medicamentos
+            medicamentos = Medicamento.objects.filter(asignacionColor__startswith = asignacionColor) #lista de objectos medicamentos
             medicamentos = [ medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
             return HttpResponse(json.dumps(medicamentos,cls=DjangoJSONEncoder), content_type='application/json')
     

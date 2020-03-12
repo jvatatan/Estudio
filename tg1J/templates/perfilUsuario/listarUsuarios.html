@@ -4,7 +4,8 @@
 {% load staticfiles i18n %}
 
  <!--para que el mensaje de validación desaparesca automaticamente la url-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="{% static 'js/mensajeValidacion.js' %}"></script>
 
 <body>
   <div class="container">
@@ -32,17 +33,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-            <!-- Búsqueda en la barra superior-->
-          <form method="get" action="{% url 'buscar' %}" id="buscar_perfilUsuario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" name="identificacion" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit" title="Buscar" >
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
+          
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                   <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -87,12 +78,12 @@
                         <tfoot>
                         </tfoot>
                         
-                        <tbody> 
+                        <tbody id="fila_dispositivo"> 
                           <!-- funcion para proyectar los campos con los nombres correspondientes -->
                           {% if object_list %}
                           {% for perfilUsuario in object_list %}
                          
-                          <tr role="row" class="odd" id="registro_item">
+                          <tr role="row" class="odd" name="registro_item_perfilUsuario">
                             
                             <td>{{perfilUsuario.first_name}}</td>
                             <td>{{perfilUsuario.last_name}}</td>
@@ -104,12 +95,12 @@
                             <td>
                     </div>
                   </div>
-                          <a href="{% url 'actualizarUsuario' user.id %}" data-toggle="tooltip" title="Actualizar Usuario">
+                          <a href="{% url 'actualizarUsuario' perfilUsuario.id %}" data-toggle="tooltip" title="Actualizar Usuario">
                             <button class="btn btn-primary btn-sm">
                             <i class="fa fa-edit"></i>
                             </button>
                           </a>
-                          <a href="{% url 'eliminarUsuario' user.id %}" data-toggle="tooltip" title="Eliminar Usuario">
+                          <a href="{% url 'eliminarUsuario' perfilUsuario.id %}" data-toggle="tooltip" title="Eliminar Usuario">
                             <button class="btn btn-danger btn-sm">
                             <i class="fa fa-trash"></i>
                             </button>
@@ -122,10 +113,9 @@
                         {% else %}
                         <h1 class="black-color">No hay usuarios registrados</h1>
                         {% endif %}    
-                        </tbody>
-                                
-                  
-                      </table>
+                        </tbody>       
+                     </table>
+
                 </div>
               </div>
             </div>
@@ -136,11 +126,71 @@
   </div>
   <!-- manejo del Ajax para generar consultas por filtro -->
   <script type="text/JavaScript" src="{% static 'js/ajax/buscar.js' %}"></script>
+
+  
+
+
+ 
+ <!-- funcion para inicializar la tabla-->
+ <script >
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    } );
+</script>
+
+
+
   <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >
     $(document).ready(function(){
       $("#messages").fadeOut(3500);
       })
+  </script>
+  <!-- manejo del Ajax para generar consultas por filtro -->
+  <script >
+    $(document).ready(function(){
+        $("#buscar_perfilUsuario").submit(function(e){
+            e.preventDefault();
+            buscar_perfilUsua = document.getElementById("buscar_perfilUsua").innerHTML
+            alert(buscar_perfilUsua);
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+    
+                success: function(json){
+                    
+                    var nFilas = $("#dataTable tr").length;
+                    var msg = "Filas: "+nFilas;
+                 
+                    for(var i=0; i<=json.length-1; i++){//13
+                    if(json[i]['identificacion']==buscar_perfilUsua){
+                      var identificacionActual = buscar_perfilUsua;
+                      if(identificacionActual=="identificacion"){
+                      $("#dataTable").find("tr([name=registro_item_perfilUsuario])").each(function(){
+                      $(this).remove();              
+                      });
+                      }
+                      if(identificacionActual=="first_name"){
+                        $("#dataTable").find("tr([name=registro_item_perfilUsuario])").each(function(){
+                        $(this).remove();              
+                      });    
+                      }
+                       
+                       
+                      } 
+
+                    }
+                    alert(document.getElements);
+
+                }
+                   
+                    
+            }
+        })
+     })
+   
+    
   </script>
  
 </body>
