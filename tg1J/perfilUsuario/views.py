@@ -91,10 +91,7 @@ def eliminarUsuario(request, id_user):
 
  """
 
-# Create your views here.
 
-def indexLogin(request):
-    return render(request, 'autentificacion/login.html')
 #esta clase es cuando me voy a registrar y no tengo cuenta en el login        
 class CuentaCreateLogin(CreateView):
     
@@ -122,8 +119,15 @@ class CuentaCreateLogin(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
  #____________________funciones basadas en clase para la construcion del CRUD______________________
+ # NOTA: cuando tenemos una funcion vasada en clase tenemos que darle seguridad de la pagina se define de esta forma ejemplo
+ #class UsuarioCreate(LoginRequiredMixin, CreateView):
+    # login_url = '/login/
+    # redirect_field_name = '/login/'
+    # raise_exception = False
+    # despues implementas lo de tu modelo o lo demas
 
-class UsuarioCreate(LoginRequiredMixin, CreateView):
+
+class UsuarioCreate(LoginRequiredMixin, CreateView): 
 
     login_url = '/login/'
     redirect_field_name = '/login/'
@@ -156,7 +160,8 @@ class UsuarioList(LoginRequiredMixin,ListView):
     login_url = '/login/'
     redirect_field_name = '/login/'
     raise_exception = False
-    model = User                                 
+    model = User 
+    queryset= model.objects.order_by('nombre')  #esta linea es para ordenar mis datos al listar                                
     template_name = 'perfilUsuario/listarUsuarios.html'
 
     def get_success_url(self):
@@ -192,7 +197,7 @@ class UsuarioUpdate(LoginRequiredMixin,UpdateView):
         form = self.form_class(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'El usuario '+ user.first_name + ' fue modificado exitosamente')
+            messages.success(request, 'El usuario '+ user.first_name + ' fue modificado exitosamente') # esta linea es para llamar nuestro mensaje redactado
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
@@ -233,7 +238,7 @@ def userLogin(request):
                     return HttpResponseRedirect(reverse('indexWelcome'))
                 else:
                     print("2")
-                   # enviarMensaje(request)
+                    enviarMensaje(request)  #linea de código para el envio del mensaje al usuario como notificación al email
                     if request.GET.get('next', None):
                         print("333")
                         return HttpResponseRedirect(request.GET['next'])
@@ -254,6 +259,11 @@ def userLogout(request):
 
 		logout(request)
 		return HttpResponseRedirect(reverse('indexLogin'))
+
+# esta funcion es para renderizar al login.
+@login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 
+def indexLogin(request):
+    return render(request, 'autentificacion/login.html')
 
 #--------------------función para el envio de la notificacion al email de medicamento proximo a vencer------------------------
 def construirString():

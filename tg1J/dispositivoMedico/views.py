@@ -105,7 +105,7 @@ class DispositivoMedicoList(LoginRequiredMixin, ListView):
     redirect_field_name = '/login/'
     raise_exception = False
     model = DispositivoMedico
-    queryset= model.objects.order_by('nombre')  
+    queryset= model.objects.order_by('nombre') #queryset para ordenar mis datos al listar
     template_name = 'dispositivoMedico/listarDispositivosMedicos.html'
 
     def get_success_url(self):
