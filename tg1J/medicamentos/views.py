@@ -36,7 +36,7 @@ def listarMedicamentos(request):
 
 #______________________________________ actualizacion de asignacion de color________________________________________________
 
-def actualizarColor(id):
+""" def actualizarColor(id):
 
     medicamento = Medicamento.objects.all().get(id=id)
     hoy = date.today()
@@ -59,10 +59,14 @@ def actualizarColor(id):
         medicamento.asignacionColor = 'Amarillo'
         medicamento.save()
         print("soy amarillo")
+    elif int(diasString) <= 0:
+        medicamento.asignacionColor = 'Naranja'
+        medicamento.save()
+        print("soy naranja")
     else:
         medicamento.asignacionColor = 'Verde' 
         medicamento.save()
-        print("soy verde")
+        print("soy verde") """
 #____________________funciones basadas en clase para la construcion del CRUD______________________
 
 class MedicamentoCreate(LoginRequiredMixin, CreateView):
@@ -80,30 +84,35 @@ class MedicamentoCreate(LoginRequiredMixin, CreateView):
         self.object = form.save()       
         hoy = date.today()
         fechaVencimiento = self.object.fecha_vencimiento
-        diasFaltantes = fechaVencimiento - hoy
-        diasString =  str(diasFaltantes)
-        startLoc = 0
-        endLoc = 3
-        diasString = diasString[startLoc: endLoc]
-        print(diasFaltantes)
-        print(int(diasString))
-        print("color")
-        if  int(diasString) > 0  and int(diasString) <= 90:
-            print(self.object.asignacionColor)
-            self.object.asignacionColor = 'Rojo'
-            print(self.object.asignacionColor)
-            self.object.save()
-            print(self.object.asignacionColor)
-            print("yo soy rojo")
-        elif int(diasString) > 90 and int(diasString) <= 180:
-            self.object.asignacionColor = 'Amarillo'
-            self.object.save()
-            print("soy amarillo")
-        else:
-            self.object.asignacionColor = 'Verde' 
-            self.object.save()
-            print("soy verde")
-        #actualizarColor(self.object.id)
+        if fechaVencimiento == None:
+            self.object.asignacionColor = 'Blanco'
+        else:    
+            diasFaltantes = fechaVencimiento - hoy
+            diasString =  str(diasFaltantes)
+            startLoc = 0
+            endLoc = 3
+            diasString = diasString[startLoc: endLoc]
+            if  int(diasString) > 0  and int(diasString) <= 90:
+                print(self.object.asignacionColor)
+                self.object.asignacionColor = 'Rojo'
+                print(self.object.asignacionColor)
+                self.object.save()
+                print(self.object.asignacionColor)
+                print("yo soy rojo")
+            elif int(diasString) > 90 and int(diasString) <= 180:
+                self.object.asignacionColor = 'Amarillo'
+                self.object.save()
+                print("soy amarillo")
+            elif int(diasString) <= 0:
+                self.object.asignacionColor = 'Naranja'
+                self.object.save()
+                print("soy naranja")
+        
+            else:
+                self.object.asignacionColor = 'Verde' 
+                self.object.save()
+                print("soy verde")
+            #actualizarColor(self.object.id)
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -139,21 +148,29 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
         self.object = form.save()       
         hoy = date.today()
         fechaVencimiento = self.object.fecha_vencimiento
-        diasFaltantes = fechaVencimiento - hoy
-        diasString =  str(diasFaltantes)
-        startLoc = 0
-        endLoc = 3
-        diasString = diasString[startLoc: endLoc]
-        if  int(diasString) > 0  and int(diasString) <= 90:
-            self.object.asignacionColor = 'Rojo'   
-            self.object.save()   
-        elif int(diasString) > 90 and int(diasString) <= 180:
-            self.object.asignacionColor = 'Amarillo'
-            self.object.save()  
-        else:
-            self.object.asignacionColor = 'Verde' 
-            self.object.save()
-        #actualizarColor(self.object.id)
+        if fechaVencimiento == None:
+            self.object.asignacionColor = 'Blanco'
+        else:    
+            diasFaltantes = fechaVencimiento - hoy
+            diasString =  str(diasFaltantes)
+            startLoc = 0
+            endLoc = 3
+            diasString = diasString[startLoc: endLoc]
+            if  int(diasString) > 0  and int(diasString) <= 90:
+                print(self.object.asignacionColor)
+                self.object.asignacionColor = 'Rojo'
+                print(self.object.asignacionColor)
+                self.object.save()
+                print(self.object.asignacionColor)
+            elif int(diasString) > 90 and int(diasString) <= 180:
+                self.object.asignacionColor = 'Amarillo'
+                self.object.save()
+            elif int(diasString) <= 0:
+                self.object.asignacionColor = 'Naranja'
+                self.object.save()        
+            else:
+                self.object.asignacionColor = 'Verde' 
+                self.object.save()
         return super().form_valid(form)
     
     def get_success_url(self):

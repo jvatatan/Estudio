@@ -7,11 +7,11 @@ from django.forms.fields import DateField
 class Medicamento(models.Model):
 
    nombre = models.CharField(max_length = 20)
-   fecha_vencimiento = models.DateField(null=True)
+   fecha_vencimiento = models.DateField(null=True, blank=True)
    fabricado_por = models.CharField(max_length = 20)
    registro_invima = models.CharField(max_length = 20)
    numero_lote = models.CharField(max_length = 20)
-   presentacion_comercial =models.CharField(max_length = 20)
+   presentacion_comercial = models.CharField(max_length = 20)
    forma_farmaceutica = models.CharField(max_length = 20)
    principio_activo = models.CharField(max_length = 20)
    unidad_medica = models.CharField(max_length = 20)
@@ -19,7 +19,7 @@ class Medicamento(models.Model):
    temperatura = models.CharField(max_length = 20)
    cantidad = models.IntegerField()
    codigo = models.IntegerField()
-   asignacionColor =models.CharField(max_length = 30, default="Blanco")
+   asignacionColor = models.CharField(max_length = 30, default="Blanco")
 
 
    #def __str__(self):

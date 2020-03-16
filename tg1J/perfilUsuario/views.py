@@ -161,7 +161,7 @@ class UsuarioList(LoginRequiredMixin,ListView):
     redirect_field_name = '/login/'
     raise_exception = False
     model = User 
-    queryset= model.objects.order_by('nombre')  #esta linea es para ordenar mis datos al listar                                
+                                   
     template_name = 'perfilUsuario/listarUsuarios.html'
 
     def get_success_url(self):

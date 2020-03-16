@@ -53,3 +53,4 @@ class MedicamentoForm(forms.ModelForm):
                 'Cantidad':forms.TextInput(attrs={'class':'form-control form-control-medicamentor'}),
                 'Codigo':forms.TextInput(attrs={'class':'form-control form-control-medicamento'}),
         }
+

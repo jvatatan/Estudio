@@ -3,11 +3,6 @@
 {% load bootstrap4 %}
 {% load staticfiles i18n %}
 
-<!--para que el mensaje de validación desaparesca automaticamente la url-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-  <!-- libreria para el manejo de Ajax para generar consultas por filtro -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <body>
   <div class="container">
@@ -33,17 +28,6 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                 <!-- Búsqueda en la barra superior-->
-                 <form method="get" action="{% url 'buscarMedicamento' %}" id="buscar_medicamento" class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" name="asignacionColor" id="buscar_medicam" class="form-control bg-light border-0 small" placeholder="Buscar por..." aria-label="buscar" aria-describedby="basic-addon2" >
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="submit" title="Buscar">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                   <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -99,7 +83,13 @@
                             aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Codigo
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="Es red: activate to sort column ascending" style="width: 90px;">Acciones</th>
+                          aria-label="Color: activate to sort column ascending" style="width: 90px;">Color
+                          </th>
+                          <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                            aria-label="Es red: activate to sort column ascending" style="width: 90px;">Acciones
+                          </th>
+
+                          
                         </tr>
                       </thead>
                       <tfoot>
@@ -125,6 +115,8 @@
                           <td style="color:Black;">{{medicamentos.temperatura}}</td>
                           <td style="color:Black;">{{medicamentos.cantidad}}</td>
                           <td style="color:Black;">{{medicamentos.codigo}}</td>
+                          <td style="color:Black;">{{medicamentos.asignacionColor}}</td>
+
                           <td style="background-color:rgb(255, 255, 255);">
                   </div>
                 </div>
@@ -159,6 +151,8 @@
                         <td style="color:Black;">{{medicamentos.temperatura}}</td>
                         <td style="color:Black;">{{medicamentos.cantidad}}</td>
                         <td style="color:Black;">{{medicamentos.codigo}}</td>
+                        <td style="color:Black;">{{medicamentos.asignacionColor}}</td>
+
                         <td style="background-color:rgb(255, 255, 255);">
                 </div>
               </div>
@@ -193,6 +187,8 @@
                       <td style="color:Black;">{{medicamentos.temperatura}}</td>
                       <td style="color:Black;">{{medicamentos.cantidad}}</td>
                       <td style="color:Black;">{{medicamentos.codigo}}</td>
+                      <td style="color:Black;">{{medicamentos.asignacionColor}}</td>
+
                       <td style="background-color:rgb(255, 255, 255);">
               </div>
             </div>
@@ -227,6 +223,43 @@
                     <td style="color:Black;">{{medicamentos.temperatura}}</td>
                     <td style="color:Black;">{{medicamentos.cantidad}}</td>
                     <td style="color:Black;">{{medicamentos.codigo}}</td>
+                    <td style="color:Black;">{{medicamentos.asignacionColor}}</td>
+
+                    <td style="background-color:rgb(255, 255, 255);">
+            </div>
+          </div>
+                  <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                    <button class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit"></i>
+                    </button>
+                  </a>
+                  <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                    <button class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash"></i>
+                    </button>
+                  </a>
+                    
+                    </td>
+                  </tr>
+                {% endif %}
+                {% if medicamentos.asignacionColor == 'Naranja' %}                                             
+                  <tr role="row" class="odd" name="registro_item_Naranja" style="background-color:rgb(250, 250, 250);">
+
+                    <td style="color:Black;">{{medicamentos.nombre}}</td>
+                    <td style="color:Black;">{{medicamentos.fecha_vencimiento}}</td>
+                    <td style="color:Black;">{{medicamentos.fabricado_por}}</td>
+                    <td style="color:Black;">{{medicamentos.registro_invima}}</td>
+                    <td style="color:Black;">{{medicamentos.numero_lote}}</td>
+                    <td style="color:Black;">{{medicamentos.presentacion_comercial}}</td>
+                    <td style="color:Black;">{{medicamentos.forma_farmaceutica}}</td>
+                    <td style="color:Black;">{{medicamentos.principio_activo}}</td>
+                    <td style="color:Black;">{{medicamentos.unidad_medica}}</td>
+                    <td style="color:Black;">{{medicamentos.porcentaje}}</td>
+                    <td style="color:Black;">{{medicamentos.temperatura}}</td>
+                    <td style="color:Black;">{{medicamentos.cantidad}}</td>
+                    <td style="color:Black;">{{medicamentos.codigo}}</td>
+                    <td style="color:Black;">{{medicamentos.asignacionColor}}</td>
+
                     <td style="background-color:rgb(255, 255, 255);">
             </div>
           </div>
@@ -272,12 +305,30 @@
 
   </script>
 
-  <!-- funcion para inicializar la tabla-->
+  <!-- funcion para inicializar la tabla y para exportar 'copy', 'csv', 'excel', 'pdf', 'print'-->
  <script >
     $(document).ready(function() {
-        $('#dataTable').DataTable();
+    $('#dataTable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      } );
+      var table = $('#dataTable').DataTable();
+    // Hide two columns
+      table.columns( [13] ).visible( false );
     } );
-</script>
+
+
+    var myDougnhnutChart = new Chart(ctx, {
+        type: 'doughnout',
+        data: data,
+        options: options
+    });
+
+  </script>
+
+
 
    <!-- manejo del Ajax para generar consultas por filtro -->
   <script >
@@ -309,6 +360,11 @@
                       }
                       if(colorActual=="Blanco"){
                         $("#dataTable").find("tr:not([name = registro_item_Blanco])").each(function(){
+                       $(this).remove();              
+                      });    
+                      } 
+                      if(colorActual=="Naranja"){
+                        $("#dataTable").find("tr:not([name = registro_item_Naranja])").each(function(){
                        $(this).remove();              
                       });    
                       } 

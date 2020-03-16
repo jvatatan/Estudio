@@ -28,6 +28,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
   <!--Carrusel Minified JS library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!--para que el mensaje de validación desaparesca automaticamente la url-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
   <!-- CarruselCompiled and minified Bootstrap JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
@@ -38,6 +42,18 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <!-- CarruselCompiled and minified Bootstrap JavaScript -->
   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" defer></script>
+   <!--library para los buttons of export -->
+  <script src="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css"></script>
+  <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js" defer></script>
+  <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" defer></script>
+  <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js" defer></script>
+  <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   
 
 {% endblock %}
@@ -124,6 +140,24 @@
             <h6 class="collapse-header">Opciones:</h6>
             <a class="collapse-item" href="{% url 'crearDispositivoMedico' %}">Crear</a>
             <a class="collapse-item" href="{% url 'listarDispositivosMedicos' %}">Listar</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReporte" aria-expanded="true" aria-controls="collapseReporte">
+          <i class="fa fa-pie-chart" style="font-size:24px;"></i>
+          <span>Reportes</span>
+        </a>
+        <div id="collapseReporte" class="collapse" aria-labelledby="headingReporte" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            {% if user.is_superuser == True %}
+            <h6 class="collapse-header">Opciones:</h6>
+            <a class="collapse-item" href="{% url 'crearUsuario' %}">Usuarios</a>
+            <a class="collapse-item" href="{% url 'listarUsuarios' %}">Medicamentos</a>
+            <a class="collapse-item" href="{% url 'listarUsuarios' %}">Dispositivos Medicos</a>
+            {% else %}
+              <h6 class="collapse-header">Opciones bloqueadas /</h6>
+            {% endif %}
           </div>
         </div>
       </li>

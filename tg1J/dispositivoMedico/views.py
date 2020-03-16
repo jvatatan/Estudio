@@ -52,6 +52,9 @@ def actualizarColor(id):
     elif int(diasString) > 90 and int(diasString) <= 180:
         dispositivoMedico.asignacionColor = 'Amarillo'
         dispositivoMedico.save()
+    elif int(diasString) <= 0:
+        dispositivoMedico.asignacionColor = 'Naranja'
+        dispositivoMedico.save()    
     else:
         dispositivoMedico.asignacionColor = 'Verde' 
         dispositivoMedico.save()
@@ -89,6 +92,10 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
             self.object.asignacionColor = 'Amarillo'
             self.object.save()
             print("soy amarillo")
+        elif int(diasString) <= 0:
+            self.object.asignacionColor = 'Naranja'
+            self.object.save()
+            print("soy naranja")
         else:
             self.object.asignacionColor = 'Verde' 
             self.object.save()
@@ -145,6 +152,10 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
             self.object.asignacionColor = 'Amarillo'
             self.object.save()
             print("soy amarillo")
+        elif int(diasString) <= 0:
+            self.object.asignacionColor = 'Naranja'
+            self.object.save()
+            print("soy naranja")
         else:
             self.object.asignacionColor = 'Verde' 
             self.object.save()
