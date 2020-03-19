@@ -1,0 +1,7 @@
+.imagenLogin_div{
+    background: url(../static/img/imagenes/auto.jpg) no-repeat;
+    background-size: cover;
+    height: 600px;
+    width: 600px;
+    
+}

@@ -12,37 +12,58 @@
 
     </head>
     <body>
-        <canvas id="myChart" width="2" height="2"></canvas>
+        <div class="container">
+            <div class="card o-hidden border-0 shadow-lg my-5" id="centrado">
+                <div class="card-body ">
+                    <div class="row">                
+                        <div class="col-1"></div>
+                        <div class="col-10">
+                            <div class="p-5">
+                               
+                                <div class="text-center" >
+                                    <h1 class="h4 text-gray-900 mb-4">	<datagrid>¿Desea eliminar el registro del medicamento {{ object.nombre }}?</datagrid></h1>
+                                </div>
+                                
+                                    <script>
+                                        var ctx= document.getElementById("myChart").getContext("2d");
+                                        var myChart= new Chart(ctx,{
+                                            type:"bar",
+                                            data:{
+                                                labels:['EstadoRojo','EstadoAmarillo','EstadoVerde', 'EstadoBlanco', 'EstadoNaranja'],
+                                                datasets:[{
+                                                        label:'Numero de Dispositivos Médicos segun su estado de color',
+                                                        data:[10,9,15,4,7,],
+                                                        backgroundColor:[
+                                                            'rgb(231, 037, 018)',
+                                                            'rgb(239, 251, 0)',
+                                                            'rgb(0, 255, 72)',
+                                                            'rgb(234, 230, 202)',
+                                                            'rgb(244, 070, 017)',
+                                                        ]
+                                                }]
+                                            },
+                                            options:{
+                                                scales:{
+                                                    yAxes:[{
+                                                            ticks:{
+                                                                beginAtZero:true
+                                                            }
+                                                    }]
+                                                }
+                                            }
+                                        });
+                                    </script>
+                                    
+                                    <a class="btn btn-default" href="{% url 'listarMedicamentos' %}">Cancelar</a>
+                                         
+                            </div>                      
+                            <div class="col-1"></div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     
-    <script>
-        var ctx= document.getElementById("myChart").getContext("2d");
-        var myChart= new Chart(ctx,{
-            type:"bar",
-            data:{
-                labels:['EstadoRojo','EstadoAmarillo','EstadoVerde', 'EstadoBlanco', 'EstadoNaranja'],
-                datasets:[{
-                        label:'Numero de Dispositivos Médicos segun su estado de color',
-                        data:[10,9,15,4,7,],
-                        backgroundColor:[
-                            'rgb(231, 037, 018)',
-                            'rgb(239, 251, 0)',
-                            'rgb(0, 255, 72)',
-                            'rgb(234, 230, 202)',
-                            'rgb(244, 070, 017)',
-                        ]
-                }]
-            },
-            options:{
-                scales:{
-                    yAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                    }]
-                }
-            }
-        });
-    </script>
     </body>
 </html>
 
