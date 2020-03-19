@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+#from django.contrib.auth.views import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 from django.contrib.auth import views as auth_views
-from perfilUsuario.views import userLogin, userLogout, success
+from perfilUsuario.views import userLogin, userLogout, success, nuevoCambioContraseña
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
@@ -32,6 +33,7 @@ urlpatterns = [
     url(r'^login/', userLogin, name="userLogin"),
 	url(r'^success/', success, name="userSuccess"),
 	url(r'^logout/', userLogout, name="userLogout"),
+    
     path('', TemplateView.as_view(template_name='login.html'), name='userLogin'),  
     #recuperacion de contraseña 
     url(
@@ -51,10 +53,9 @@ urlpatterns = [
         name='password_reset_done',
     ),
     url(
-        r'^password/recovery/(?P<uidb64>[0-9A-Za-z_\-]+)/'
-        r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        r'^password/recovery/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.PasswordResetConfirmView.as_view(
-            success_url=reverse_lazy('home'),
+            success_url=reverse_lazy('validarCambioContraseña'),
             post_reset_login=True,
             template_name='registrar/password_reset_confirm.html',
             post_reset_login_backend=(
@@ -63,6 +64,16 @@ urlpatterns = [
         ),
         name='password_reset_confirm',
     ),
+    url(r'^password_reset_complete/', nuevoCambioContraseña, name="validarCambioContraseña"),
+    url(
+        r'^recovery/done/$',
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name='registrar/password_reset_complete.html',
+        ),
+        name='password_reset_complete',
+    ),
+
+
 
    
 

@@ -24,7 +24,7 @@
 
             {% endif %}
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Lista de medicamentos registrados</h6>
+              <h1 class="m-0 font-weight-bold text-center">Lista de Medicamentos Registrados</h1>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -120,12 +120,12 @@
                           <td style="background-color:rgb(255, 255, 255);">
                   </div>
                 </div>
-                        <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                        <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
                           <button class="btn btn-primary btn-sm">
                           <i class="fa fa-edit"></i>
                           </button>
                         </a>
-                        <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                        <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
                           <button class="btn btn-danger btn-sm">
                           <i class="fa fa-trash"></i>
                           </button>
@@ -156,12 +156,12 @@
                         <td style="background-color:rgb(255, 255, 255);">
                 </div>
               </div>
-                      <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                      <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
                         <button class="btn btn-primary btn-sm">
                         <i class="fa fa-edit"></i>
                         </button>
                       </a>
-                      <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                      <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
                         <button class="btn btn-danger btn-sm">
                         <i class="fa fa-trash"></i>
                         </button>
@@ -192,12 +192,12 @@
                       <td style="background-color:rgb(255, 255, 255);">
               </div>
             </div>
-                    <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                    <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
                       <button class="btn btn-primary btn-sm">
                       <i class="fa fa-edit"></i>
                       </button>
                     </a>
-                    <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                    <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
                       <button class="btn btn-danger btn-sm">
                       <i class="fa fa-trash"></i>
                       </button>
@@ -228,12 +228,12 @@
                     <td style="background-color:rgb(255, 255, 255);">
             </div>
           </div>
-                  <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                  <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
                     <button class="btn btn-primary btn-sm">
                     <i class="fa fa-edit"></i>
                     </button>
                   </a>
-                  <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                  <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
                     <button class="btn btn-danger btn-sm">
                     <i class="fa fa-trash"></i>
                     </button>
@@ -243,7 +243,7 @@
                   </tr>
                 {% endif %}
                 {% if medicamentos.asignacionColor == 'Naranja' %}                                             
-                  <tr role="row" class="odd" name="registro_item_Naranja" style="background-color:rgb(250, 250, 250);">
+                  <tr role="row" class="odd" name="registro_item_Naranja" style="background-color:rgb(244, 070, 017);">
 
                     <td style="color:Black;">{{medicamentos.nombre}}</td>
                     <td style="color:Black;">{{medicamentos.fecha_vencimiento}}</td>
@@ -263,12 +263,12 @@
                     <td style="background-color:rgb(255, 255, 255);">
             </div>
           </div>
-                  <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar medicamento">
+                  <a href="{% url 'actualizarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Actualizar Medicamento">
                     <button class="btn btn-primary btn-sm">
                     <i class="fa fa-edit"></i>
                     </button>
                   </a>
-                  <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar medicamento">
+                  <a href="{% url 'eliminarMedicamento' medicamentos.id %}" data-toggle="tooltip" title="Eliminar Medicamento">
                     <button class="btn btn-danger btn-sm">
                     <i class="fa fa-trash"></i>
                     </button>

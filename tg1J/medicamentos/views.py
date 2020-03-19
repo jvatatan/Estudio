@@ -10,6 +10,8 @@ import json
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 # Create your views here.
 
@@ -190,6 +192,11 @@ class MedicamentoDelete(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue Eliminado Exitosamente.')
         return super().get_success_url()
+
+# esta funcion es para vista de reportes graficos de medicamentos.
+@login_required(login_url='/login/') 
+def reporteMedicamentos(request):
+    return render(request, 'reportes/reporteMedicamentos.html')
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarMedicamento(request):

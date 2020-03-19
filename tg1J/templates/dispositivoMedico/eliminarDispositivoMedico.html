@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
-{%load staticfiles %}
 {% block main %}
 {% load bootstrap4 %}
+{% load staticfiles i18n %}
 <!--para que el mensaje de validación desaparesca automaticamente la url-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -18,7 +18,7 @@
                     
                             {% for message in messages %}
                                 
-                                <div id="messages" class="container-fluid" style="background-color:rgb(33, 243, 40);color:#fff;height:100px;">
+                                <div id="messages" class="container-fluid" style="background-color:rgb(255, 30, 30);color:#fff;height:100px;">
                                 <h1 {% if mesage.tags == "success" %} class="alert alert-sucess "{% endif %}>{{ message }}</h1>
                                 </div>
                                 <br>
@@ -27,13 +27,13 @@
 
                             {% endif %}
                             <div class="text-center" >
-                                <h1 class="h4 text-gray-900 mb-4">	<datagrid>¿Desea eliminar el registro del Dispositivo Medicó {{ object.nombre }}?</datagrid></h1>
+                                <h1 class="h4 text-gray-900 mb-4">	<datagrid>¿Desea eliminar el registro del Dispositivo Médico {{ object.nombre }}?</datagrid></h1>
                             </div>
                             <form  method="POST">   
                                 <div class="form-group">            
                                     {% csrf_token %}
                                 </div>
-                                <button type="submit" class="btn btn-success btn-danger btn-user btn-block">Si, Eliminar Dispositivo Medicó</button>
+                                <button type="submit" class="btn btn-success btn-danger btn-user btn-block">Si, Eliminar Dispositivo Médico</button>
                                 <a class="btn btn-default" href="{% url 'listarDispositivosMedicos' %}">Cancelar</a>
                             </form>           
                         </div>                      

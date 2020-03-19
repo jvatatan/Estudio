@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'listarMedicamentos', MedicamentoList.as_view(), name='listarMedicamentos'),
     url(r'actualizarMedicamento/(?P<pk>\d+)/$', MedicamentoUpdate.as_view(), name='actualizarMedicamento'),
     url(r'eliminarMedicamento/(?P<pk>\d+)/$', MedicamentoDelete.as_view(), name='eliminarMedicamento'),
+    url(r'^reporteMedicamentos/', reporteMedicamentos, name="reporteMedicamentos"),
     url(r'^buscarMedicamento/', buscarMedicamento, name="buscarMedicamento"),
 
 ]

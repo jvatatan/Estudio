@@ -10,6 +10,8 @@ from django.core import serializers
 import json
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+
 # Create your views here.
 
 def index(request):
@@ -181,6 +183,11 @@ class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue eliminado Exitosamente.')
         return super().get_success_url() 
+
+# esta funcion es para vista de reportes graficos de dispositivos medicos.
+@login_required(login_url='/login/') 
+def reporteDispositivosMedicos(request):
+    return render(request, 'reportes/reporteDispositivosMedicos.html')
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarDispositivoMedico(request):

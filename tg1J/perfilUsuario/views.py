@@ -218,6 +218,12 @@ class UsuarioDelete(LoginRequiredMixin, DeleteView):
         return super().get_success_url()
 
 
+# esta funcion es para vista de reportes graficos de usuarios.
+@login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 
+def reporteUsuarios(request):
+    return render(request, 'reportes/reporteUsuarios.html')
+
+
 #--------------------para el login------------------------
 
 def userLogin(request):
@@ -238,7 +244,7 @@ def userLogin(request):
                     return HttpResponseRedirect(reverse('indexWelcome'))
                 else:
                     print("2")
-                    enviarMensaje(request)  #linea de código para el envio del mensaje al usuario como notificación al email
+                   #enviarMensaje(request)  #linea de código para el envio del mensaje al usuario como notificación al email
                     if request.GET.get('next', None):
                         print("333")
                         return HttpResponseRedirect(request.GET['next'])
@@ -264,6 +270,12 @@ def userLogout(request):
 @login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 
 def indexLogin(request):
     return render(request, 'autentificacion/login.html')
+
+# esta funcion es para renderizar al template de validacion de la nuevo  cambio de contraseña.
+#@login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 
+def nuevoCambioContraseña(request):
+    return render(request, 'registrar/password_reset_complete.html')
+
 
 #--------------------función para el envio de la notificacion al email de medicamento proximo a vencer------------------------
 def construirString():

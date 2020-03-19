@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% block main %}
+{% load bootstrap4 %}
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <title>Reporte de Dispositivos Médicos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+    <body>
+        <canvas id="myChart" width="2" height="2"></canvas>
+    
+    <script>
+        var ctx= document.getElementById("myChart").getContext("2d");
+        var myChart= new Chart(ctx,{
+            type:"bar",
+            data:{
+                labels:['EstadoRojo','EstadoAmarillo','EstadoVerde', 'EstadoBlanco', 'EstadoNaranja'],
+                datasets:[{
+                        label:'Numero de Dispositivos Médicos segun su estado de color',
+                        data:[10,9,15,4,7,],
+                        backgroundColor:[
+                            'rgb(231, 037, 018)',
+                            'rgb(239, 251, 0)',
+                            'rgb(0, 255, 72)',
+                            'rgb(234, 230, 202)',
+                            'rgb(244, 070, 017)',
+                        ]
+                }]
+            },
+            options:{
+                scales:{
+                    yAxes:[{
+                            ticks:{
+                                beginAtZero:true
+                            }
+                    }]
+                }
+            }
+        });
+    </script>
+    </body>
+</html>
+
+{% endblock %}
+
+
