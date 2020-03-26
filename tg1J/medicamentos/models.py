@@ -26,10 +26,10 @@ class Medicamento(models.Model):
           #return self.asignacionColor
 
    def guardarDatosMedicamento(self, nombre, fecha_vencimiento, fabricado_por, registro_invima, numero_lote, 
-                           presentacion_comercial, forma_farmaceutica, principio_activo, unidad_medica, porcentaje, temperatura, cantidad, codigo):
+                           presentacion_comercial, forma_farmaceutica, principio_activo, unidad_medica, porcentaje, temperatura, cantidad, codigo, asignacionColor):
       nuevoRegistroMedicamento = Medicamento(
          nombre=nombre, fecha_vencimiento=fecha_vencimiento, fabricado_por=fabricado_por, registro_invima=registro_invima, numero_lote=numero_lote, presentacion_comercial=presentacion_comercial,
-                           forma_farmaceutica=forma_farmaceutica, principio_activo=principio_activo, unidad_medica=unidad_medica, porcentaje=porcentaje, temperatura=temperatura, cantidad=cantidad, codigo=codigo)
+                           forma_farmaceutica=forma_farmaceutica, principio_activo=principio_activo, unidad_medica=unidad_medica, porcentaje=porcentaje, temperatura=temperatura, cantidad=cantidad, codigo=codigo, asignacionColor=asignacionColor)
       nuevoRegistroMedicamento.save()
      
 

@@ -98,7 +98,7 @@ class CuentaCreateLogin(CreateView):
     model = User
     template_name = 'autentificacion/crearCuenta.html'
     form_class = UserForm
-    success_url = reverse_lazy('userLogin')
+    success_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super(CuentaCreateLogin, self).get_context_data(**kwargs)
@@ -254,17 +254,20 @@ def userLogin(request):
                 return render(request, "autentificacion/login.html", context)
         else:
             return render(request, "autentificacion/login.html", context)
-
+            
+@login_required(login_url='/login/')
 def success(request):
 
     context = {}
     context['user'] = request.user
     return render(request, "autentificacion/login.html", context)
-
+@login_required(login_url='/login/')
 def userLogout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('indexLogin'))
 
-		logout(request)
-		return HttpResponseRedirect(reverse('indexLogin'))
+
+
 
 # esta funcion es para renderizar al login.
 @login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 

@@ -24,10 +24,10 @@ class DispositivoMedico(models.Model):
 
     
    def guardarDatosDispositivoMedico(self, nombre, fecha_vencimiento, fabricado_por, registro_invima, numero_lote, presentacion_comercial,
-                                 forma_farmaceutica, principio_activo, unidad_medica, porcentaje, temperatura, riesgo, cantidad, codigo):
+                                 forma_farmaceutica, principio_activo, unidad_medica, porcentaje, temperatura, riesgo, cantidad, codigo, asignacionColor):
       nuevoRegistroDispositivoMedico = DispositivoMedico(
          nombre=nombre, fecha_vencimiento=fecha_vencimiento, fabricado_por=fabricado_por, registro_invima=registro_invima, numero_lote=numero_lote, presentacion_comercial=presentacion_comercial,
-                                 forma_farmaceutica=forma_farmaceutica, principio_activo=principio_activo, unidad_medica=unidad_medica, porcentaje=porcentaje, temperatura=temperatura, riesgo=riesgo, cantidad=cantidad, codigo=codigo)
+                                 forma_farmaceutica=forma_farmaceutica, principio_activo=principio_activo, unidad_medica=unidad_medica, porcentaje=porcentaje, temperatura=temperatura, riesgo=riesgo, cantidad=cantidad, codigo=codigo, asignacionColor=asignacionColor)
       nuevoRegistroDispositivoMedico.save()
 
         
