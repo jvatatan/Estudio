@@ -12,7 +12,7 @@
     <body>
         <div class="col-md-6 offset-md-3">
             <div class="card">
-                <div class="card-body text-center">
+                <div id ="reporteMedicamento" class="card-body text-center">
                     <h1>Reporte de Medicamentos</h1>
                 </div>
                 <div class="card-body">
@@ -55,22 +55,22 @@
         </script>
     </body>
 </html>
-{% endblock %}
+
 
 <!-- manejo del Ajax para generar consultas por filtro -->
- <!-- 
+ 
  <script >
     $(document).ready(function(){
-        $("#buscar_medicamento").submit(function(e){
+        $("#reporteMedicamento").submit(function(e){
             e.preventDefault();
-            buscar_medicam = document.getElementById("myChart").value
+            myChart = document.getElementById("myChart").value
             $.ajax({
                 url: $(this).attr('action'),
                 type: $(this).attr('method'),
                 data: $(this).serialize(),
     
                 success: function(json){
-                    var colorActual = buscar_medicam;
+                    var colorActual = myChart;
                     if(colorActual=="Rojo"){
                     $("#dataTable").find("tr:not([name = registro_item_Rojo])").each(function(){
                     $(this).remove();              
@@ -102,4 +102,5 @@
         })
     })
     
-</script> -->
+</script> 
+{% endblock %}

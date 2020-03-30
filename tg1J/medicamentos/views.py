@@ -204,7 +204,7 @@ def reporteMedica(request):
     if request.is_ajax:
         if request.method == 'GET':
             asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
-            medicamentos = Medicamento.objects.son(asignacionColor__startswith = asignacionColor) #lista de objectos medicamentos
+            medicamentos = Medicamento.objects.filter(asignacionColor__startswith = asignacionColor) #lista de objectos medicamentos
             medicamentos = [ reporte_medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
             return HttpResponse(json.dumps(medicamentos,cls=DjangoJSONEncoder), content_type='application/json')
     

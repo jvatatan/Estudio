@@ -51,7 +51,7 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body   ---- style="background-image: url('../static/img/imagenes/logoPrincipal.jpg'); background-size:cover;" -->
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 d-none d-lg-block" style="background-image: url('../static/img/imagenes/logoPrincipal.jpg');"></div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
@@ -66,7 +66,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar cuenta</a>
-                        <a class="btn btn-default" href="{% url 'userLogin' %}">Cancelar</a>
+                        <a class="btn btn-default" href="{% url 'indexLogin' %}">Cancelar</a>
 
                         <!-- Mensaje de confirmacion de su registro de cuenta-->
                         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
