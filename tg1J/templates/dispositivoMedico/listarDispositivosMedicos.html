@@ -320,6 +320,9 @@
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
       } );
+      var table = $('#dataTable').DataTable();
+    // Hide two columns
+      table.columns( [14] ).visible( false );
     } );
   </script>
 

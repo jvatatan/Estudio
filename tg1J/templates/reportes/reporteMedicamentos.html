@@ -9,98 +9,57 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body>
+    <body class="bg-gradient-primary">
         <div class="col-md-6 offset-md-3">
             <div class="card">
-                <div id ="reporteMedicamento" class="card-body text-center">
+                <div class="card-body text-center">
                     <h1>Reporte de Medicamentos</h1>
+                    <input type="hidden" id="rojo" class="w3-xlarge" value="{{Rojo}}"></input>
+                    <input type="hidden" id="amarillo" class="w3-xlarge" value="{{Amarillo}}"></input>
+                    <input type="hidden" id="verde" class="w3-xlarge" value="{{Verde}}"></input>
+                    <input type="hidden" id="blanco" class="w3-xlarge" value="{{Blanco}}"></input>
+                    <input type="hidden" id="naranja" class="w3-xlarge" value="{{Naranja}}"></input>
                 </div>
                 <div class="card-body">
-                    <canvas id="myChart" width="2" height="2"></canvas>
+                    <canvas id="myChart" style="width: 100%;"></canvas>
                 </div>
             </div>
         </div>
         <script>
-            var olddata= [2,8,3,4,7,];
-            var ctx= document.getElementById("myChart").getContext("2d");
-            var myChart= new Chart(ctx,{
-                type:"pie",
-                data:{
-                    labels:['EstadoRojo','EstadoAmarillo','EstadoVerde', 'EstadoBlanco', 'EstadoNaranja'],
-                    datasets:[{
-                            label:'Numero de Medicamentos segun su estado de color',
-                            data: olddata,
-                            backgroundColor:[
-                                'rgb(255, 30, 30)',
-                                'rgb(239, 251, 0)',
-                                'rgb(0, 255, 72)',
-                                'rgb(234, 230, 202)',
-                                'rgb(244, 070, 017)',
-                            ]
-                            
+            rojo = document.getElementById("rojo").value; 
+            amarillo = document.getElementById("amarillo").value;
+            verde = document.getElementById("verde").value;
+            blanco = document.getElementById("blanco").value;
+            naranja = document.getElementById("naranja").value;
 
-                            
-                    }]
-                },
+            var config = {
+            type:"pie",
+            data:{
+                labels:['EstadoRojo','EstadoAmarillo','EstadoVerde', 'EstadoBlanco', 'EstadoNaranja'],
+                datasets:[{
+                    label:'Numero de Medicamentos segun su estado de color',
+                    data: [rojo,amarillo,verde,blanco,naranja],
+                    backgroundColor:[
+                        'rgb(255, 30, 30)',
+                        'rgb(239, 251, 0)',
+                        'rgb(0, 255, 72)',
+                        'rgb(234, 230, 202)',
+                        'rgb(244, 070, 017)',
+                    ]
+                               
+                    }],
+            },
+                
                 options:{
-                    scales:{
-                        yAxes:[{
-                                ticks:{
-                                    beginAtZero:true
-                                }
-                        }]
-                    }
+                    responsive: true
                 }
-            });
+            };
+    window.onload = function(){
+        var ctx= document.getElementById("myChart").getContext("2d");
+        window.myPie = new Chart(ctx, config);               
+                
+    };        
         </script>
     </body>
 </html>
-
-
-<!-- manejo del Ajax para generar consultas por filtro -->
- 
- <script >
-    $(document).ready(function(){
-        $("#reporteMedicamento").submit(function(e){
-            e.preventDefault();
-            myChart = document.getElementById("myChart").value
-            $.ajax({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: $(this).serialize(),
-    
-                success: function(json){
-                    var colorActual = myChart;
-                    if(colorActual=="Rojo"){
-                    $("#dataTable").find("tr:not([name = registro_item_Rojo])").each(function(){
-                    $(this).remove();              
-                    });
-                    }
-                    if(colorActual=="Verde"){
-                      $("#dataTable").find("tr:not([name = registro_item_Verde])").each(function(){
-                      $(this).remove();              
-                    });    
-                    }
-                    if(colorActual=="Amarillo"){
-                      $("#dataTable").find("tr:not([name = registro_item_Amarillo])").each(function(){
-                     $(this).remove();              
-                    });   
-                    }
-                    if(colorActual=="Blanco"){
-                      $("#dataTable").find("tr:not([name = registro_item_Blanco])").each(function(){
-                     $(this).remove();              
-                    });    
-                    } 
-                    if(colorActual=="Naranja"){
-                      $("#dataTable").find("tr:not([name = registro_item_Naranja])").each(function(){
-                     $(this).remove();              
-                    });    
-                    } 
-                    
-                }
-            })
-        })
-    })
-    
-</script> 
 {% endblock %}

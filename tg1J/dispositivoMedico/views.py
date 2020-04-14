@@ -13,7 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
-
+@login_required(login_url='/login/') 
 def index(request):
     return render(request, 'dispositivoMedico/index.html')
 
@@ -72,36 +72,46 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listarDispositivosMedicos')
 
     def form_valid(self, form):
-        self.object = form.save()
+        self.object = form.save()       
         hoy = date.today()
         fechaVencimiento = self.object.fecha_vencimiento
-        diasFaltantes = fechaVencimiento - hoy
-        diasString =  str(diasFaltantes)
-        startLoc = 0
-        endLoc = 3
-        diasString = diasString[startLoc: endLoc]
-        print(diasFaltantes)
-        print(int(diasString))
-        print("color")
-        if  int(diasString) > 0  and int(diasString) <= 90:
-            print(self.object.asignacionColor)
+        if fechaVencimiento == None:
+            self.object.asignacionColor = 'Blanco'
+        
+        elif fechaVencimiento == hoy:
             self.object.asignacionColor = 'Rojo'
-            print(self.object.asignacionColor)
-            self.object.save()
-            print(self.object.asignacionColor)
-            print("yo soy rojo")
-        elif int(diasString) > 90 and int(diasString) <= 180:
-            self.object.asignacionColor = 'Amarillo'
-            self.object.save()
-            print("soy amarillo")
-        elif int(diasString) <= 0:
-            self.object.asignacionColor = 'Naranja'
-            self.object.save()
-            print("soy naranja")
-        else:
-            self.object.asignacionColor = 'Verde' 
-            self.object.save()
-            print("soy verde")   
+      
+        else:    
+            diasFaltantes = fechaVencimiento - hoy
+            diasString =  str(diasFaltantes)
+            startLoc = 0
+            endLoc = 3
+            diasString = diasString[startLoc: endLoc]
+            print(diasFaltantes)
+            print(int(diasString))
+            print("color")
+
+            if  int(diasString) > 0 and int(diasString) <= 90:
+                print(self.object.asignacionColor)
+                self.object.asignacionColor = 'Rojo'
+                print(self.object.asignacionColor)
+                self.object.save()
+                print(self.object.asignacionColor)
+                print("yo soy rojo")
+                
+
+            elif int(diasString) > 90 and int(diasString) <= 180:
+                self.object.asignacionColor = 'Amarillo'
+                self.object.save()
+                print("soy amarillo")
+            elif int(diasString) < 0:
+                self.object.asignacionColor = 'Naranja'
+                self.object.save()
+                print("soy naranja")
+            else:
+                self.object.asignacionColor = 'Verde' 
+                self.object.save()
+                print("soy verde")   
         return super().form_valid(form)
         
     def get_success_url(self):
@@ -132,37 +142,46 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('listarDispositivosMedicos')
 
     def form_valid(self, form):
-        self.object = form.save()
+        self.object = form.save()       
         hoy = date.today()
         fechaVencimiento = self.object.fecha_vencimiento
-        diasFaltantes = fechaVencimiento - hoy
-        diasString =  str(diasFaltantes)
-        startLoc = 0
-        endLoc = 3
-        diasString = diasString[startLoc: endLoc]
-        print(diasFaltantes)
-        print(int(diasString))
-        print("color")
-        if  int(diasString) > 0  and int(diasString) <= 90:
-            print(self.object.asignacionColor)
+        if fechaVencimiento == None:
+            self.object.asignacionColor = 'Blanco'
+
+        elif fechaVencimiento == hoy:
             self.object.asignacionColor = 'Rojo'
-            print(self.object.asignacionColor)
-            self.object.save()
-            print(self.object.asignacionColor)
-            print("yo soy rojo")
-        elif int(diasString) > 90 and int(diasString) <= 180:
-            self.object.asignacionColor = 'Amarillo'
-            self.object.save()
-            print("soy amarillo")
-        elif int(diasString) <= 0:
-            self.object.asignacionColor = 'Naranja'
-            self.object.save()
-            print("soy naranja")
+
         else:
-            self.object.asignacionColor = 'Verde' 
-            self.object.save()
-            print("soy verde")
-        #actualizarColor(self.object.id)
+            diasFaltantes = fechaVencimiento - hoy
+            diasString =  str(diasFaltantes)
+            startLoc = 0
+            endLoc = 3
+            diasString = diasString[startLoc: endLoc]
+            print(diasFaltantes)
+            print(int(diasString))
+            print("color")
+            
+            if  int(diasString) > 0 and int(diasString) <= 90:
+                print(self.object.asignacionColor)
+                self.object.asignacionColor = 'Rojo'
+                print(self.object.asignacionColor)
+                self.object.save()
+                print(self.object.asignacionColor)
+                print("yo soy rojo
+
+            elif int(diasString) > 90 and int(diasString) <= 180:
+                self.object.asignacionColor = 'Amarillo'
+                self.object.save()
+                print("soy amarillo")
+            elif int(diasString) < 0:
+                self.object.asignacionColor = 'Naranja'
+                self.object.save()
+                print("soy naranja")
+            else:
+                self.object.asignacionColor = 'Verde' 
+                self.object.save()
+                print("soy verde")
+            #actualizarColor(self.object.id)
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -187,7 +206,13 @@ class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
 # esta funcion es para vista de reportes graficos de dispositivos medicos.
 @login_required(login_url='/login/') 
 def reporteDispositivosMedicos(request):
-    return render(request, 'reportes/reporteDispositivosMedicos.html')
+    dispositivoMedicosRojo = DispositivoMedico.objects.filter(asignacionColor ='Rojo').count()
+    dispositivoMedicosAmarrillo = DispositivoMedico.objects.filter(asignacionColor ='Amarillo').count()
+    dispositivoMedicosVerde = DispositivoMedico.objects.filter(asignacionColor ='Verde').count()
+    dispositivoMedicosBlanco = DispositivoMedico.objects.filter(asignacionColor ='Blanco').count()
+    dispositivoMedicosNaranja = DispositivoMedico.objects.filter(asignacionColor ='Naranja').count()
+    context = {'Rojo': dispositivoMedicosRojo, 'Amarillo': dispositivoMedicosAmarrillo, 'Verde': dispositivoMedicosVerde, 'Blanco': dispositivoMedicosBlanco, 'Naranja': dispositivoMedicosNaranja}
+    return render(request, 'reportes/reporteDispositivosMedicos.html' , context)
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarDispositivoMedico(request):

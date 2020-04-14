@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+#yo creo que falta algo por instalar, voy a comparar con mi ambiente listo
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'dispositivoMedico',
     'perfilUsuario',
+   
     
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -105,9 +108,7 @@ DATABASES = {
     } 
 }
 
-
-
-# Password validation
+# Password validation  FIrma esto no se que era, si quiere, pongalo a trabajar como le funcionaba y lo re implementamos, por que el error ese ultimo no se que sea listo firma tambien mire eso esta raro
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [

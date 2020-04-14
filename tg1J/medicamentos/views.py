@@ -11,10 +11,14 @@ from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required, permission_required
-
+# esto es lo del codigo QR
+import pyqrcode
+import png
+from PIL import Image, ImageOps
+from pyzbar.pyzbar import decode
 
 # Create your views here.
-
+@login_required(login_url='/login/') 
 def index(request):
     return render(request, 'medicamentos/index.html')
 
@@ -155,9 +159,13 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
         else:    
             diasFaltantes = fechaVencimiento - hoy
             diasString =  str(diasFaltantes)
+            print(diasFaltantes)
             startLoc = 0
             endLoc = 3
+            print(startLoc)
+            print(endLoc)
             diasString = diasString[startLoc: endLoc]
+            print(diasString)
             if  int(diasString) > 0  and int(diasString) <= 90:
                 print(self.object.asignacionColor)
                 self.object.asignacionColor = 'Rojo'
@@ -196,7 +204,14 @@ class MedicamentoDelete(LoginRequiredMixin, DeleteView):
 # esta funcion es para vista de reportes graficos de medicamentos.
 @login_required(login_url='/login/') 
 def reporteMedicamentos(request):
-    return render(request, 'reportes/reporteMedicamentos.html')
+    medicamentoRojo = Medicamento.objects.filter(asignacionColor = 'Rojo').count()
+    medicamentoAmarillo = Medicamento.objects.filter(asignacionColor = 'Amarillo').count()
+    medicamentoVerde = Medicamento.objects.filter(asignacionColor = 'Verde').count()
+    medicamentoBlanco = Medicamento.objects.filter(asignacionColor = 'Blanco').count()
+    medicamentoNaranja = Medicamento.objects.filter(asignacionColor = 'Naranja').count()
+    print(medicamentoRojo)
+    context = {'Rojo': medicamentoRojo, 'Amarillo': medicamentoAmarillo, 'Verde': medicamentoVerde, 'Blanco': medicamentoBlanco, 'Naranja': medicamentoNaranja}
+    return render(request, 'reportes/reporteMedicamentos.html' , context)
 
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
@@ -212,6 +227,19 @@ def reporte_medicamento_serializer(medicamento):
     return {'id': medicamento.id, 'nombre': medicamento.nombre, 'cantidad': medicamento.cantidad, 'codigo': medicamento.codigo, 'asignacionColor': medicamento.asignacionColor}
 
 
+# Esta es la funcion de la creacion de el codigo QR
+def crearQR(request):
+
+    qr = pyqrcode.create("Aqui va la informacion del medicamento")
+    qr.png("medicamento.png", scale=15)
+    qr.show()
+   
+    # Render the view.
+    return render(request, 'medicamentos/crearQR.html')
+
+def decodeQR():
+    data = decode(Image.open('medicamento.png'))
+    print(data)
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarMedicamento(request):

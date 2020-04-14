@@ -34,11 +34,16 @@
                                 <div class="form-group">
                                     {% csrf_token %}
                                     {% bootstrap_form form %} 
+                                    <a class="btn btn-primary" href="{% url 'crearQR' %}">CrearQR</a>
+                                    <div>
+
+                                    </div>
                                 <!-- boton para confirmar su registro del Medicamento y la cancelacion de el -->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Registrar Medicamento</a>
                                 <a class="btn btn-default" href="{% url 'indexWelcome' %}">Cancelar</a>
+                                
 
                                 <!-- Mensaje de confirmacion de su registro de Medicamento-->
                                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

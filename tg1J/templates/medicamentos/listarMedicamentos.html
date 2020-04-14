@@ -25,6 +25,9 @@
             {% endif %}
             <div class="card-header py-3">
               <h1 class="m-0 font-weight-bold text-center">Lista de Medicamentos Registrados</h1>
+              
+
+              
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -88,8 +91,6 @@
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
                             aria-label="Es red: activate to sort column ascending" style="width: 90px;">Acciones
                           </th>
-
-                          
                         </tr>
                       </thead>
                       <tfoot>
@@ -306,29 +307,21 @@
   </script>
 
   <!-- funcion para inicializar la tabla y para exportar 'copy', 'csv', 'excel', 'pdf', 'print'-->
- <script >
+  <script >
     $(document).ready(function() {
     $('#dataTable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
+        
       } );
       var table = $('#dataTable').DataTable();
     // Hide two columns
       table.columns( [13] ).visible( false );
+
     } );
-
-
-    var myDougnhnutChart = new Chart(ctx, {
-        type: 'doughnout',
-        data: data,
-        options: options
-    });
-
   </script>
-
-
 
    <!-- manejo del Ajax para generar consultas por filtro -->
   <script >

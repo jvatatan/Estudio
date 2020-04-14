@@ -261,6 +261,7 @@ def success(request):
     context = {}
     context['user'] = request.user
     return render(request, "autentificacion/login.html", context)
+    
 @login_required(login_url='/login/')
 def userLogout(request):
     logout(request)

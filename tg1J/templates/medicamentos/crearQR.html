@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block main %}
+{% load bootstrap4 %}
+{% load staticfiles i18n %}
+<!-- la idea es que ahi vaya la imagen del qr que creaste, pero actualmente la esta creando en la ruta que te voy a mostar -->
+<h1>Este es el Codigo QR</h1>
+<img src="{% static 'img/imagenes/horn.png' %}" style="width:50%; float:right;"> 
+
+{% endblock %}
+
+

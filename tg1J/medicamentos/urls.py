@@ -7,7 +7,7 @@ urlpatterns = [
     #url(r'crearMedicamento', crearMedicamento, name='crearMedicamento'),
     #url(r'listarMedicamentos', listarMedicamentos, name='listarMedicamentos'),
 
-   
+    url(r'crearQR', crearQR, name='crearQR'),
     url(r'crearMedicamento', MedicamentoCreate.as_view(), name='crearMedicamento'),
     url(r'listarMedicamentos', MedicamentoList.as_view(), name='listarMedicamentos'),
     url(r'actualizarMedicamento/(?P<pk>\d+)/$', MedicamentoUpdate.as_view(), name='actualizarMedicamento'),
