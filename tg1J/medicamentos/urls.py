@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'eliminarMedicamento/(?P<pk>\d+)/$', MedicamentoDelete.as_view(), name='eliminarMedicamento'),
     url(r'^reporteMedicamentos/', reporteMedicamentos, name="reporteMedicamentos"),
     url(r'^buscarMedicamento/', buscarMedicamento, name="buscarMedicamento"),
-    url(r'^reporteMedica/', reporteMedica, name="reporteMedicaJSON"),
+    
     
 
 ]

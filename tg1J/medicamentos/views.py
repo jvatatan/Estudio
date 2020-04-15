@@ -166,6 +166,7 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
             print(endLoc)
             diasString = diasString[startLoc: endLoc]
             print(diasString)
+
             if  int(diasString) > 0  and int(diasString) <= 90:
                 print(self.object.asignacionColor)
                 self.object.asignacionColor = 'Rojo'
@@ -212,19 +213,6 @@ def reporteMedicamentos(request):
     print(medicamentoRojo)
     context = {'Rojo': medicamentoRojo, 'Amarillo': medicamentoAmarillo, 'Verde': medicamentoVerde, 'Blanco': medicamentoBlanco, 'Naranja': medicamentoNaranja}
     return render(request, 'reportes/reporteMedicamentos.html' , context)
-
-
-#---------estas funciones es para realizar una busqueda por filtro---------  
-def reporteMedica(request):
-    if request.is_ajax:
-        if request.method == 'GET':
-            asignacionColor = request.GET.get('asignacionColor') #esta linea es para un diccionario
-            medicamentos = Medicamento.objects.filter(asignacionColor__startswith = asignacionColor) #lista de objectos medicamentos
-            medicamentos = [ reporte_medicamento_serializer(medicamento) for medicamento in medicamentos ] # lista de diccionario
-            return HttpResponse(json.dumps(medicamentos,cls=DjangoJSONEncoder), content_type='application/json')
-    
-def reporte_medicamento_serializer(medicamento):
-    return {'id': medicamento.id, 'nombre': medicamento.nombre, 'cantidad': medicamento.cantidad, 'codigo': medicamento.codigo, 'asignacionColor': medicamento.asignacionColor}
 
 
 # Esta es la funcion de la creacion de el codigo QR

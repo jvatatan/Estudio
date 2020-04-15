@@ -91,7 +91,7 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
             print(int(diasString))
             print("color")
 
-            if  int(diasString) > 0 and int(diasString) <= 90:
+            if  int(diasString) >= 0 and int(diasString) <= 90:
                 print(self.object.asignacionColor)
                 self.object.asignacionColor = 'Rojo'
                 print(self.object.asignacionColor)
@@ -115,7 +115,7 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
         
     def get_success_url(self):
-        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue Registrado Exitosamente.')
+        messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue Registrado Exitosamente.')
         return super().get_success_url()    
 
 class DispositivoMedicoList(LoginRequiredMixin, ListView):
@@ -128,7 +128,7 @@ class DispositivoMedicoList(LoginRequiredMixin, ListView):
     template_name = 'dispositivoMedico/listarDispositivosMedicos.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue listado Exitosamente.')
+        messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue listado Exitosamente.')
         return super().get_success_url() 
 
 class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
@@ -148,26 +148,27 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
         if fechaVencimiento == None:
             self.object.asignacionColor = 'Blanco'
 
-        elif fechaVencimiento == hoy:
-            self.object.asignacionColor = 'Rojo'
+        
 
         else:
             diasFaltantes = fechaVencimiento - hoy
             diasString =  str(diasFaltantes)
             startLoc = 0
             endLoc = 3
-            diasString = diasString[startLoc: endLoc]
+            diasString = diasString[startLoc: endLoc ]
+
             print(diasFaltantes)
             print(int(diasString))
             print("color")
-            
-            if  int(diasString) > 0 and int(diasString) <= 90:
+           
+            if  int(diasString) >= 0 and int(diasString) <= 90:
                 print(self.object.asignacionColor)
                 self.object.asignacionColor = 'Rojo'
                 print(self.object.asignacionColor)
                 self.object.save()
                 print(self.object.asignacionColor)
-                print("yo soy rojo
+                print("yo soy rojo")
+
 
             elif int(diasString) > 90 and int(diasString) <= 180:
                 self.object.asignacionColor = 'Amarillo'
@@ -185,7 +186,7 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue modificado Exitosamente.')
+        messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue modificado Exitosamente.')
         return super().get_success_url() 
         
 
@@ -200,7 +201,7 @@ class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('listarDispositivosMedicos')
 
     def get_success_url(self):
-        messages.success(self.request, 'El Dispositivo Medicó ' + self.object.nombre +' fue eliminado Exitosamente.')
+        messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue eliminado Exitosamente.')
         return super().get_success_url() 
 
 # esta funcion es para vista de reportes graficos de dispositivos medicos.
