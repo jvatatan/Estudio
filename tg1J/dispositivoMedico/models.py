@@ -18,7 +18,7 @@ class DispositivoMedico(models.Model):
    temperatura = models.CharField(max_length = 40, blank=True)
    riesgo = models.CharField(max_length = 40)
    cantidad = models.IntegerField()
-   codigo = models.IntegerField()
+   codigo = models.CharField(max_length = 60, blank=True)
    asignacionColor = models.CharField(max_length = 30, default="Blanco")
 
 

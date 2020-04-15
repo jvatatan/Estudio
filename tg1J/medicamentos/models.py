@@ -18,7 +18,7 @@ class Medicamento(models.Model):
    porcentaje = models.CharField(max_length = 40, blank=True)
    temperatura = models.CharField(max_length = 40, blank=True)
    cantidad = models.IntegerField()
-   codigo = models.IntegerField()
+   codigo = models.CharField(max_length = 60, blank=True)
    asignacionColor = models.CharField(max_length = 30, default="Blanco")
 
 

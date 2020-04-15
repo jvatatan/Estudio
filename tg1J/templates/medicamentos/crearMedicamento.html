@@ -34,10 +34,10 @@
                                 <div class="form-group">
                                     {% csrf_token %}
                                     {% bootstrap_form form %}
-                                    <div >     
+                                   <!--  <div >     
                                         <label id="info-QR" onchange="update">Información de Código QR</label>
                                         <input id="code"  for="id_codigoQR" type="text" name="CodigoQR" class="form-control" placeholder="" title="id_codigoQR" value="">                                                                  
-                                    </div> 
+                                    </div>  -->
                                     
                                     <!-- Divider -->
                                     <hr class="sidebar-divider">
@@ -176,8 +176,8 @@
     <script type="text/javascript">
         setInterval(update,1);
         function update() {
-            var id_temperatura = document.getElementById("subresultado").innerHTML;
-            document.getElementById("id_temperatura").value = id_temperatura;
+            var id_codigo = document.getElementById("subresultado").innerHTML;
+            document.getElementById("id_codigo").value = id_codigo;
         }
         update();
     </script>
