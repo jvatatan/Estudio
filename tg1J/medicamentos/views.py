@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib import messages
 from medicamentos.models import Medicamento
 from medicamentos.forms import MedicamentoForm
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core import serializers
 import json
@@ -16,6 +16,8 @@ import pyqrcode
 import png
 from PIL import Image, ImageOps
 from pyzbar.pyzbar import decode
+# esto es para la ruta de almacenamiento de la imagen cuando generamos el c'odigo QR
+import shutil
 
 # Create your views here.
 @login_required(login_url='/login/') 
@@ -98,26 +100,26 @@ class MedicamentoCreate(LoginRequiredMixin, CreateView):
             startLoc = 0
             endLoc = 3
             diasString = diasString[startLoc: endLoc]
-            if  int(diasString) > 0  and int(diasString) <= 90:
-                print(self.object.asignacionColor)
+            if diasString.isdigit() == False:
                 self.object.asignacionColor = 'Rojo'
-                print(self.object.asignacionColor)
                 self.object.save()
-                print(self.object.asignacionColor)
-                print("yo soy rojo")
-            elif int(diasString) > 90 and int(diasString) <= 180:
-                self.object.asignacionColor = 'Amarillo'
-                self.object.save()
-                print("soy amarillo")
-            elif int(diasString) <= 0:
-                self.object.asignacionColor = 'Naranja'
-                self.object.save()
-                print("soy naranja")
-        
             else:
-                self.object.asignacionColor = 'Verde' 
-                self.object.save()
-                print("soy verde")
+
+                if  int(diasString) >= 0  and int(diasString) <= 90:
+                    print(self.object.asignacionColor)
+                    self.object.asignacionColor = 'Rojo'
+                    print(self.object.asignacionColor)
+                    self.object.save()
+                    print(self.object.asignacionColor)
+                elif int(diasString) > 90 and int(diasString) <= 180:
+                    self.object.asignacionColor = 'Amarillo'
+                    self.object.save()
+                elif int(diasString) < 0:
+                    self.object.asignacionColor = 'Naranja'
+                    self.object.save()        
+                else:
+                    self.object.asignacionColor = 'Verde' 
+                    self.object.save()
             #actualizarColor(self.object.id)
         return super().form_valid(form)
 
@@ -166,28 +168,59 @@ class MedicamentoUpdate(LoginRequiredMixin, UpdateView):
             print(endLoc)
             diasString = diasString[startLoc: endLoc]
             print(diasString)
-
-            if  int(diasString) > 0  and int(diasString) <= 90:
-                print(self.object.asignacionColor)
+            if diasString.isdigit() == False:
                 self.object.asignacionColor = 'Rojo'
-                print(self.object.asignacionColor)
                 self.object.save()
-                print(self.object.asignacionColor)
-            elif int(diasString) > 90 and int(diasString) <= 180:
-                self.object.asignacionColor = 'Amarillo'
-                self.object.save()
-            elif int(diasString) <= 0:
-                self.object.asignacionColor = 'Naranja'
-                self.object.save()        
             else:
-                self.object.asignacionColor = 'Verde' 
-                self.object.save()
+
+                if  int(diasString) >= 0  and int(diasString) <= 90:
+                    print(self.object.asignacionColor)
+                    self.object.asignacionColor = 'Rojo'
+                    print(self.object.asignacionColor)
+                    self.object.save()
+                    print(self.object.asignacionColor)
+                elif int(diasString) > 90 and int(diasString) <= 180:
+                    self.object.asignacionColor = 'Amarillo'
+                    self.object.save()
+                elif int(diasString) < 0:
+                    self.object.asignacionColor = 'Naranja'
+                    self.object.save()        
+                else:
+                    self.object.asignacionColor = 'Verde' 
+                    self.object.save()
         return super().form_valid(form)
     
     def get_success_url(self):
         messages.success(self.request, 'El Medicamento ' + self.object.nombre + ' fue Modificado Exitosamente.')
         return super().get_success_url()
 
+# esta funcion es para generar la Actualizacion de todos los medicamentos.
+class ActualizarColorMedicamentos(View):
+    def get(self, request):
+        hoy = date.today()
+        medicamentos = Medicamento.objects.exclude(asignacionColor = 'Blanco')
+        for medicamento in medicamentos:
+            fecha = medicamento.fecha_vencimiento
+            diferencia = fecha - hoy
+            print('soy el medicamento  ' + str(medicamento.id) + 'con color anterior' + medicamento.asignacionColor)
+            if int(diferencia.days) >= 0 and int(diferencia.days) <=90:
+                medicamento.asignacionColor = 'Rojo'
+                medicamento.save()
+                print('soy el medicamento' + str(medicamento.id) + 'con color actual' + medicamento.asignacionColor)
+            elif int(diferencia.days) > 90 and int(diferencia.days) <=180:
+                medicamento.asignacionColor = 'Amarillo'
+                medicamento.save()
+                print('soy el medicamento' + str(medicamento.id) + 'con color actual' + medicamento.asignacionColor)
+            elif int(diferencia.days) < 0:
+                medicamento.asignacionColor = 'Naranja'
+                medicamento.save()
+                print('soy el medicamento' + str(medicamento.id) + 'con color actual' + medicamento.asignacionColor)
+            else:
+                medicamento.asignacionColor = 'Verde'
+                medicamento.save()
+                print('soy el medicamento' + str(medicamento.id) + 'con color actual' + medicamento.asignacionColor)
+
+          
 class MedicamentoDelete(LoginRequiredMixin, DeleteView):
 
     login_url = '/login/'
@@ -216,18 +249,44 @@ def reporteMedicamentos(request):
 
 
 # Esta es la funcion de la creacion de el codigo QR
-def crearQR(request):
+class CreateQRForm(View):
+    
+    def  get(self, request):
+        code = request.GET.get('code', None)
+        nombre = request.GET.get('nombre', None)
+        numero_lote =request.GET.get('numero_lote', None)
+        print(nombre)
+        qr = pyqrcode.create(code + numero_lote)
+        nombreArchivo = nombre +".png"
+        qr.png(nombreArchivo, scale=15)
+        shutil.move(nombreArchivo, "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagMedicamentoCódigoQR" )
+        qr.show()
+        decodeQR(nombreArchivo)
+        data = {
+            'code': code,
+            'nombre': nombre,
+            'numero_lote': numero_lote
+        }
 
-    qr = pyqrcode.create("Aqui va la informacion del medicamento")
-    qr.png("medicamento.png", scale=15)
-    qr.show()
-   
-    # Render the view.
-    return render(request, 'medicamentos/crearQR.html')
-
-def decodeQR():
-    data = decode(Image.open('medicamento.png'))
+def decodeQR(nombreArchivo):
+    data = decode(Image.open(nombreArchivo))
     print(data)
+
+class decodeQRMedicamento(View):
+    def  get(self, request):
+        nombreArchivo = request.GET.get('nombreArchivo', None)
+        ruta = nombreArchivo[12:len(nombreArchivo)]
+        rutaCompleta = "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagMedicamentoCódigoQR"+ ruta
+        data = decode(Image.open(rutaCompleta))
+        dataStr = str(data)
+        palabra = dataStr.split("=")[1].split(",")[0]
+        palabra = palabra [2:len(palabra)-1]
+        print(palabra)
+        data = {
+            'code': palabra,
+
+        }
+        return JsonResponse(data)
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarMedicamento(request):

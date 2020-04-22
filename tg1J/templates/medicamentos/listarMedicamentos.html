@@ -44,6 +44,13 @@
                     <div class="col-sm-12">
                       <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
                       role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                      <!--boton para atualizar estado de color-->
+                      <div>
+
+                        <button id="actualizarEstadoColor"  type="submit" href="{% url 'ActualizarColorMedicamentos' %}" class="btn btn-primary" >Actualizar Estado de Color</button>
+                      </div>
+                      <!-- Divider -->
+                      <hr class="sidebar-divider">
                       <thead>
                         <tr role="row">
                           <th class="sorting_desc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
@@ -296,7 +303,25 @@
   </div>
 
 
+  <!-- manejo del Ajax para generar la Actualizacion del estado de colores -->
+ 
+  <script>
+    $("#actualizarEstadoColor").click(function() {
 
+      $.ajax({
+          url: '{% url "ActualizarColorMedicamentos" %}',
+          data: {
+              'code': 'true',
+          },
+          dataType: 'json',
+          success: function (data) {
+              alert("Salio melo");
+          }
+
+      });
+      return false;
+    });
+  </script>
 
   <!-- funcion para que el mensaje de validación desaparesca automaticamente en segundos o en lo que quiera-->
   <script >

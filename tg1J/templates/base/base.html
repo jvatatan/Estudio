@@ -58,6 +58,7 @@
   <!--library para los reportes graficos en general -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 
+
 {% endblock %}
 
 </head>
@@ -131,6 +132,7 @@
             <h6 class="collapse-header">Opciones:</h6>
             <a class="collapse-item" href="{% url 'crearMedicamento' %}">Crear</a>
             <a class="collapse-item" href="{% url 'listarMedicamentos' %}">Listar</a>
+            <a class="collapse-item" id="actualizarEstadoColor" href="{% url 'ActualizarColorMedicamentos' %}">Actualizar Estado de Color</a>
           </div>
         </div>
       </li>
@@ -146,6 +148,7 @@
             <h6 class="collapse-header">Opciones:</h6>
             <a class="collapse-item" href="{% url 'crearDispositivoMedico' %}">Crear</a>
             <a class="collapse-item" href="{% url 'listarDispositivosMedicos' %}">Listar</a>
+            <a class="collapse-item" id="actualizarEstadoColorDispostivo" href="{% url 'ActualizarColorDispositivos' %}">Actualizar Estado de Color</a>
           </div>
         </div>
       </li>
@@ -238,10 +241,10 @@
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts 
+                 Counter - Alerts 
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
-              <!-- Dropdown - Alerts 
+               Dropdown - Alerts 
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Centro de Alertas
@@ -283,14 +286,14 @@
               </div>
             </li>
 
-            <!-- Nav Item - Messages 
+            Nav Item - Messages 
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages 
+                 Counter - Messages 
                 <span class="badge badge-danger badge-counter">7</span>
               </a>
-              <!-- Dropdown - Messages 
+               Dropdown - Messages 
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Centro de Mensages
@@ -362,7 +365,7 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Registro de actividades
-                   <!-- Application header or nav-bar 
+                   Application header or nav-bar 
                       {% if user.is_authenticated %}
                       <ul class="nav justify-content-end">
                           <a class="nav-link" href="#">{{ user }}</a>
@@ -377,7 +380,7 @@
                       {% endif %}
                 </a> 
                 <div class="dropdown-divider"></div>-->
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModalCerrarSesion">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cerrar sesión
                 </a>
@@ -431,11 +434,11 @@
   </a>
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="logoutModalCerrarSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelCerrarSesion" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">¿Preparado para Salir?</h5>
+          <h5 class="modal-title" id="exampleModalLabelCerrarSesion">¿Preparado para Salir?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -467,6 +470,15 @@
   <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
   <script src="{% static 'js/ajax/librery.js' %}"></script>
+ 
+  <!-- manejo del Ajax para generar la Actualizacion del estado de colores Medicamentos -->
+  <script type="text/JavaScript" src="{% static 'js/ajax/ActualizarEstadoColorMedicamento.js' %}"></script>
+
+  <!-- manejo del Ajax para generar la Actualizacion del estado de colores Dispositivos Médicos -->
+  <script type="text/JavaScript" src="{% static 'js/ajax/ActualizarEstadoColorDispositivo.js' %}"></script>
+
+   
+  
   {% endblock %}
 </body>
 

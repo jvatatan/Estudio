@@ -4,13 +4,20 @@ from django.urls import reverse
 from django.contrib import messages
 from dispositivoMedico.models import DispositivoMedico
 from dispositivoMedico.forms import DispositivoMedicoForm
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core import serializers
 import json
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+# esto es lo del codigo QR
+import pyqrcode
+import png
+from PIL import Image, ImageOps
+from pyzbar.pyzbar import decode
+# esto es para la ruta de almacenamiento de la imagen cuando generamos el c'odigo QR
+import shutil
 
 # Create your views here.
 @login_required(login_url='/login/') 
@@ -77,43 +84,36 @@ class DispositivoMedicoCreate(LoginRequiredMixin, CreateView):
         fechaVencimiento = self.object.fecha_vencimiento
         if fechaVencimiento == None:
             self.object.asignacionColor = 'Blanco'
-        
-        elif fechaVencimiento == hoy:
-            self.object.asignacionColor = 'Rojo'
-      
         else:    
             diasFaltantes = fechaVencimiento - hoy
             diasString =  str(diasFaltantes)
             startLoc = 0
             endLoc = 3
             diasString = diasString[startLoc: endLoc]
-            print(diasFaltantes)
-            print(int(diasString))
-            print("color")
-
-            if  int(diasString) >= 0 and int(diasString) <= 90:
-                print(self.object.asignacionColor)
+            if diasString.isdigit() == False:
                 self.object.asignacionColor = 'Rojo'
-                print(self.object.asignacionColor)
                 self.object.save()
-                print(self.object.asignacionColor)
-                print("yo soy rojo")
-                
-
-            elif int(diasString) > 90 and int(diasString) <= 180:
-                self.object.asignacionColor = 'Amarillo'
-                self.object.save()
-                print("soy amarillo")
-            elif int(diasString) < 0:
-                self.object.asignacionColor = 'Naranja'
-                self.object.save()
-                print("soy naranja")
             else:
-                self.object.asignacionColor = 'Verde' 
-                self.object.save()
-                print("soy verde")   
+
+                if  int(diasString) >= 0  and int(diasString) <= 90:
+                    print(self.object.asignacionColor)
+                    self.object.asignacionColor = 'Rojo'
+                    print(self.object.asignacionColor)
+                    self.object.save()
+                    print(self.object.asignacionColor)
+                elif int(diasString) > 90 and int(diasString) <= 180:
+                    self.object.asignacionColor = 'Amarillo'
+                    self.object.save()
+                elif int(diasString) < 0:
+                    self.object.asignacionColor = 'Naranja'
+                    self.object.save()        
+                else:
+                    self.object.asignacionColor = 'Verde' 
+                    self.object.save()
+            #actualizarColor(self.object.id)
         return super().form_valid(form)
-        
+
+    
     def get_success_url(self):
         messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue Registrado Exitosamente.')
         return super().get_success_url()    
@@ -148,47 +148,70 @@ class DispositivoMedicoUpdate(LoginRequiredMixin, UpdateView):
         if fechaVencimiento == None:
             self.object.asignacionColor = 'Blanco'
 
-        
-
         else:
             diasFaltantes = fechaVencimiento - hoy
             diasString =  str(diasFaltantes)
+            print(diasFaltantes)
             startLoc = 0
             endLoc = 3
+            print(startLoc)
+            print(endLoc)
             diasString = diasString[startLoc: endLoc ]
-
             print(diasFaltantes)
-            print(int(diasString))
-            print("color")
-           
-            if  int(diasString) >= 0 and int(diasString) <= 90:
-                print(self.object.asignacionColor)
+            if diasString.isdigit() == False:
                 self.object.asignacionColor = 'Rojo'
-                print(self.object.asignacionColor)
                 self.object.save()
-                print(self.object.asignacionColor)
-                print("yo soy rojo")
-
-
-            elif int(diasString) > 90 and int(diasString) <= 180:
-                self.object.asignacionColor = 'Amarillo'
-                self.object.save()
-                print("soy amarillo")
-            elif int(diasString) < 0:
-                self.object.asignacionColor = 'Naranja'
-                self.object.save()
-                print("soy naranja")
+                print("yo soy color rojo")
             else:
-                self.object.asignacionColor = 'Verde' 
-                self.object.save()
-                print("soy verde")
+
+                if  int(diasString) >= 0  and int(diasString) <= 90:
+                    print(self.object.asignacionColor)
+                    self.object.asignacionColor = 'Rojo'
+                    print(self.object.asignacionColor)
+                    self.object.save()
+                    print(self.object.asignacionColor)
+                elif int(diasString) > 90 and int(diasString) <= 180:
+                    self.object.asignacionColor = 'Amarillo'
+                    self.object.save()
+                elif int(diasString) < 0:
+                    self.object.asignacionColor = 'Naranja'
+                    self.object.save()        
+                else:
+                    self.object.asignacionColor = 'Verde' 
+                    self.object.save()
             #actualizarColor(self.object.id)
         return super().form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue modificado Exitosamente.')
         return super().get_success_url() 
-        
+
+# esta funcion es para generar la Actualizacion de todos los dispositivo.
+class ActualizarColorDispositivos(View):
+    def get(self, request):
+        hoy = date.today()
+        dispositivos = DispositivoMedico.objects.exclude(asignacionColor = 'Blanco')
+        for dispositivo in dispositivos:
+            fecha = dispositivo.fecha_vencimiento
+            diferencia = fecha - hoy
+            print('soy el dispositivo  ' + str(dispositivo.id) + 'con color anterior' + dispositivo.asignacionColor)
+            if int(diferencia.days) >= 0 and int(diferencia.days) <=90:
+                dispositivo.asignacionColor = 'Rojo'
+                dispositivo.save()
+                print('soy el dispositivo' + str(dispositivo.id) + 'con color actual' + dispositivo.asignacionColor)
+            elif int(diferencia.days) > 90 and int(diferencia.days) <=180:
+                dispositivo.asignacionColor = 'Amarillo'
+                dispositivo.save()
+                print('soy el dispositivo' + str(dispositivo.id) + 'con color actual' + dispositivo.asignacionColor)
+            elif int(diferencia.days) < 0:
+                dispositivo.asignacionColor = 'Naranja'
+                dispositivo.save()
+                print('soy el dispositivo' + str(dispositivo.id) + 'con color actual' + dispositivo.asignacionColor)
+            else:
+                dispositivo.asignacionColor = 'Verde'
+                dispositivo.save()
+                print('soy el dispositivo' + str(dispositivo.id) + 'con color actual' + dispositivo.asignacionColor)
+
 
 class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
 
@@ -204,6 +227,7 @@ class DispositivoMedicoDelete(LoginRequiredMixin, DeleteView):
         messages.success(self.request, 'El Dispositivo Médico ' + self.object.nombre +' fue eliminado Exitosamente.')
         return super().get_success_url() 
 
+
 # esta funcion es para vista de reportes graficos de dispositivos medicos.
 @login_required(login_url='/login/') 
 def reporteDispositivosMedicos(request):
@@ -214,6 +238,32 @@ def reporteDispositivosMedicos(request):
     dispositivoMedicosNaranja = DispositivoMedico.objects.filter(asignacionColor ='Naranja').count()
     context = {'Rojo': dispositivoMedicosRojo, 'Amarillo': dispositivoMedicosAmarrillo, 'Verde': dispositivoMedicosVerde, 'Blanco': dispositivoMedicosBlanco, 'Naranja': dispositivoMedicosNaranja}
     return render(request, 'reportes/reporteDispositivosMedicos.html' , context)
+
+# Esta es la funcion de la creacion de el codigo QR
+class CreateQRForm_dispositivo(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = '/login/'
+    raise_exception = False
+    
+    def  get(self, request):
+        code = request.GET.get('code', None)
+        nombre = request.GET.get('nombre', None)
+        print(nombre)
+        qr = pyqrcode.create(code)
+        nombreArchivo = nombre +".png"
+        qr.png(nombreArchivo, scale=15)
+        qr.show()
+        shutil.move(nombreArchivo, "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagDispositivoMédicoCódigoQR")
+        decodeQR(nombreArchivo)
+        data = {
+            'code': code,
+            'nombre': nombre
+        }
+
+def decodeQR(nombreArchivo):
+    data = decode(Image.open(nombreArchivo))
+    print(data)
+
 
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscarDispositivoMedico(request):

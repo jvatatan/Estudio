@@ -244,7 +244,7 @@ def userLogin(request):
                     return HttpResponseRedirect(reverse('indexWelcome'))
                 else:
                     print("2")
-                    #enviarMensaje(request)  #linea de código para el envio del mensaje al usuario como notificación al email
+                    enviarMensaje(request)  
                     if request.GET.get('next', None):
                         print("333")
                         return HttpResponseRedirect(request.GET['next'])
@@ -285,7 +285,7 @@ def nuevoCambioContraseña(request):
 def construirString():
 
     medicamentos = str()
-    medicamentosRojos = Medicamento.objects.filter(asignacionColor='Rojo')
+    medicamentosRojos = Medicamento.objects.filter(asignacionColor ='Rojo')
     for object in medicamentosRojos: 
         medicamentos += object.nombre + " ,"
     return medicamentos
@@ -293,7 +293,7 @@ def construirString():
 def construirStringDispositivos():
 
     dispositivos = str()
-    dispositivosRojos = DispositivoMedico.objects.filter(asignacionColor='Rojo')
+    dispositivosRojos = DispositivoMedico.objects.filter(asignacionColor ='Rojo')
     for object in dispositivosRojos: 
         dispositivos += object.nombre + " ,"
     return dispositivos
@@ -305,15 +305,45 @@ def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
     else: 
         return False
 
+def diasMedeicamento():
+    diferenciaDiasM = str()
+    hoy = date.today()
+    medicamentos = Medicamento.objects.filter(asignacionColor = 'Rojo')
+    for medicamento in medicamentos:
+        fecha = medicamento.fecha_vencimiento
+        diferenciaDiasM = fecha - hoy
+    print(diferenciaDiasM)    
+            
+    return diferenciaDiasM 
+
+def diasDispositivoMédico():
+    diferenciaDiasD = str()
+    hoy = date.today()
+    dispositivos = DispositivoMedico.objects.filter(asignacionColor = 'Rojo')
+    for dispositivo in dispositivos:
+        fecha = dispositivo.fecha_vencimiento
+        diferenciaDiasD = fecha - hoy
+    print(diferenciaDiasD)    
+            
+    return diferenciaDiasD   
+       
+def ContenidoMensaje():
+    resultado = str()
+    if not construirString():
+        return "El o los  dispositivos medicos " + construirStringDispositivos() + " se encuentra en estado ROJO para vencer, " + diasDispositivoMédico() +" faltantes por favor estar atentos."
+    elif not construirStringDispositivos():
+        return "El o los  medicamentos " + construirString() + " se encuentra en estado ROJO para vencer, " + diasMedeicamento() +" faltantes por favor estar atentos."
+    else:
+        if not construirString() or construirStringDispositivos() == "0":
+            return "no hay Medicamentos ni Dispositivos Médicos para verificar"
+    return resultado
+
+
 def enviarMensaje(request):
         correos = User.objects.all()
         correosFinal =list()
-        message = ""
-        if not construirString():
-            message = "El o los  dispositivos medicos " + construirStringDispositivos() + " se encuentra en estado ROJO para vencer, por favor estar atentos."
-        if not construirStringDispositivos():
-            message = "El o los  medicamentos " + construirString() + " se encuentra en estado ROJO para vencer, por favor estar atentos."
-
+        message = ContenidoMensaje()
+       
         for object in correos:
                 correosFinal = object.email
                 email_message = EmailMessage(
