@@ -24,24 +24,6 @@ import shutil
 def index(request):
     return render(request, 'dispositivoMedico/index.html')
 
-""" def crearDispositivoMedico(request):
-    if request.method == 'POST':
-        form = DispositivoMedicoForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return HttpResponseRedirect(reverse('crearDispositivoMedico')) #Se redirecciona a la pagina que desee
-    else:
-        form = DispositivoMedicoForm()
-        context = {'form':form} 
-    return render(request,'dispositivoMedico/crearDispositivoMedico.html', context) 
-
-
-def listarDispositivosMedeicos(request):
-
-    dispositivoMedico = DispositivoMedico.objects.all()
-    context = {'dispositivoMedico':dispositivoMedico}
-    return render(request,'dispositivoMedico/listarDispositivosMedicos.html',context) """
-
 #______________________________________ actualización de asignación de color________________________________________________
 
 def actualizarColor(id):

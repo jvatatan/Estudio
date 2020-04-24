@@ -3,7 +3,6 @@
 {% load bootstrap4 %}
 {% load staticfiles i18n %}
 
-
 <body>
   <div class="container">
     <div class="card-body p-0">
@@ -25,9 +24,6 @@
             {% endif %}
             <div class="card-header py-3">
               <h1 class="m-0 font-weight-bold text-center">Lista de Medicamentos Registrados</h1>
-              
-
-              
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -46,7 +42,6 @@
                       role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                       <!--boton para atualizar estado de color-->
                       <div>
-
                         <button id="actualizarEstadoColor"  type="submit" href="{% url 'ActualizarColorMedicamentos' %}" class="btn btn-primary" >Actualizar Estado de Color</button>
                       </div>
                       <!-- Divider -->
@@ -302,9 +297,7 @@
     </div>
   </div>
 
-
   <!-- manejo del Ajax para generar la Actualizacion del estado de colores -->
- 
   <script>
     $("#actualizarEstadoColor").click(function() {
 

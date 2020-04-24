@@ -24,57 +24,6 @@ import shutil
 def index(request):
     return render(request, 'medicamentos/index.html')
 
-""" def crearMedicamento(request):
-    if request.method == 'POST':
-        form = MedicamentoForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return HttpResponseRedirect(reverse('crearMedicamento')) #Se redirecciona a la pagina que desee
-    else:
-        form = MedicamentoForm()
-        context = {'form':form} 
-    return render(request,'medicamentos/crearMedicamento.html', context) 
-
-
-def listarMedicamentos(request):
-
-    medicamento = Medicamento.objects.all().order_by('id')
-    context = {'medicamento':medicamento}
-    return render(request,'medicamentos/listarMedicamentos.html',context) """
-
-#______________________________________ actualizacion de asignacion de color________________________________________________
-
-""" def actualizarColor(id):
-
-    medicamento = Medicamento.objects.all().get(id=id)
-    hoy = date.today()
-    fechaVencimiento = medicamento.fecha_vencimiento
-    diasFaltantes = fechaVencimiento - hoy
-    diasString =  str(diasFaltantes)
-    startLoc = 0
-    endLoc = 3
-    diasString = diasString[startLoc: endLoc]
-    print(int(diasString))
-    print("color")
-    if  int(diasString) > 0  and int(diasString) <= 90:
-        print(medicamento.asignacionColor)
-        medicamento.asignacionColor = 'Rojo'
-        print(medicamento.asignacionColor)
-        medicamento.save()
-        print(medicamento.asignacionColor)
-        print("yo soy rojo")
-    elif int(diasString) > 90 and int(diasString) <= 180:
-        medicamento.asignacionColor = 'Amarillo'
-        medicamento.save()
-        print("soy amarillo")
-    elif int(diasString) <= 0:
-        medicamento.asignacionColor = 'Naranja'
-        medicamento.save()
-        print("soy naranja")
-    else:
-        medicamento.asignacionColor = 'Verde' 
-        medicamento.save()
-        print("soy verde") """
 #____________________funciones basadas en clase para la construcion del CRUD______________________
 
 class MedicamentoCreate(LoginRequiredMixin, CreateView):

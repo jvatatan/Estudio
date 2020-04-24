@@ -39,30 +39,20 @@
                                 <div class="form-group">
                                     {% csrf_token %}
                                     {% bootstrap_form form %}
-  
-                                    
-                                   
                                      <!-- Modal para el scaner de código QR de Medicamento-->
-
-                                    <div id="moda" class="dropdown-divider"></div>
-                                   
-                                   
+                                <div id="moda" class="dropdown-divider"></div> 
                                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
         
                                     </div>
                                 </div>
-
                                 <!-- el input para seleccionar el archivo QR y realiza su lectura -->
-                                <input type="file" id="myFile" multiple size="50" onchange="myFunction()">
-
-                                  
+                                <input type="file" id="myFile" multiple size="50" onchange="myFunction()">  
                                 <!-- boton para confirmar su registro del Medicamento o la cancelacion de el, y el boton para crear QR -->
                                 <div class="dropdown-divider"></div>
                                     <a class="btn btn-default" href="{% url 'indexWelcome' %}">Cancelar</a>
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#logoutModal-RegistroMedicamento">Registrar Medicamento</button>
                                     <button id="qrGenerador"  type="button" class="btn btn-primary" >Generar QR</button>
-
                                 <!-- Mensaje de confirmacion de su registro de Medicamento-->
                                 <div class="modal fade" id="logoutModal-RegistroMedicamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-RegistroMedicamento" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -82,12 +72,8 @@
                                     </div>
                                     </div>
                                 </div>
-
-                                </div>
-                               
-                            
-                            </form> 
-                                      
+                                </div>                           
+                            </form>                                   
                         </div>                      
                         <div class="col-1"></div> 
                     </div>
@@ -150,9 +136,6 @@
         return false;
     });
     </script>
-
-    
-
     
 </body>
 {% endblock %}

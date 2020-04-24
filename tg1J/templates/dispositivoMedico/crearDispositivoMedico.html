@@ -33,9 +33,6 @@
                                 <div class="form-group" id="formulario">
                                     {% csrf_token %}
                                     {% bootstrap_form form %}
-                                 <div>
-                                     <input type="text" id="datos">
-                                 </div>
                                   <!-- Modal para el scaner de código QR de Medicamento-->
                                  <div id="moda" class="dropdown-divider"></div>
 
@@ -176,27 +173,7 @@
         $("#messages").fadeOut(3500);
         })
     </script>
-    <!-- javaScript para generar codigo QR -->
-    <script >
-        $("#qrGenerador").click(function() {
-        var code = $('input[name="codigo"]').val();
-        var nombre = $('input[name="nombre"]').val();
-        if (code) {
-            // Create Ajax Call
-            $.ajax({
-                url: '{% url "createQRForm_dispositivo" %}',
-                data: {
-                    'code': code,
-                    'nombre': nombre,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    alert(code, nombre);
-                }
-            });
-          } // else { alert("Todos los campos deben tener un valor válido.");}
-        return false;
-    });
+    
     </script>
      <!-- javaScript para generar codigo QR -->
      <script>

@@ -2,16 +2,10 @@ from django.conf.urls import url, include
 from medicamentos.views import *
 
 urlpatterns = [
-
     url(r'index', index, name='index'),
-    #url(r'crearMedicamento', crearMedicamento, name='crearMedicamento'),
-    #url(r'listarMedicamentos', listarMedicamentos, name='listarMedicamentos'),
-
-   
     url(r'crearMedicamento', MedicamentoCreate.as_view(), name='crearMedicamento'),
     url(r'listarMedicamentos', MedicamentoList.as_view(), name='listarMedicamentos'),
     url(r'ajax/decodeQRMedicamento', decodeQRMedicamento.as_view(), name='decodeQRMedicamento'),
-
     url(r'ajax/CreateQRForm', CreateQRForm.as_view(), name='createQRForm'),
     url(r'actualizarMedicamento/(?P<pk>\d+)/$', MedicamentoUpdate.as_view(), name='actualizarMedicamento'),
     url(r'ActualizarColorMedicamentos', ActualizarColorMedicamentos.as_view(), name='ActualizarColorMedicamentos'),

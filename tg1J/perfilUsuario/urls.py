@@ -4,7 +4,6 @@ from perfilUsuario.views import *
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    #path('perfilUsuario/admin', views.crearUsuario, name='crearUsuario'),
     url(r'index', indexWelocome, name='indexWelcome'),
     url(r'crearUsuario', UsuarioCreate.as_view(), name='crearUsuario'),
     url(r'crearCuenta', CuentaCreateLogin.as_view(), name='crearCuenta'),
@@ -15,11 +14,5 @@ urlpatterns = [
     url(r'^reporteUsuarios/', reporteUsuarios, name="reporteUsuarios"),
     url(r'^buscar/', buscar, name="buscar"),
 
-    #url(r'crearUsuario', crearUsuario, name='crearUsuario'),
-    #url(r'listarUsuarios', listarUsuarios, name='listarUsuarios'),
-     #url(r'actualizarUsuario/(?P<pk>\d+)/$', actualizarUsuario, name='actualizarUsuario'),
-    #url(r'eliminarUsuario/(?P<pk>\d+)/$', eliminarUsuario, name='eliminarUsuario'),
-
-  
 
 ]

@@ -15,9 +15,7 @@ from django.core import serializers
 import json
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.contrib.auth.models import AbstractUser
-
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from perfilUsuario.models import User
@@ -27,70 +25,6 @@ from perfilUsuario.models import User
 @login_required(login_url='/login/')
 def indexWelocome(request):
     return render(request, 'paginaInicio/inicio.html')
-
-""" 
-@login_required(login_url='/login/')
-def crearUsuario(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        form2 = RegistroUsuarioForm(request.POST)
-        if form.is_valid() and form2.is_valid():
-            form.save()
-            form2.save()
-            registro = RegistroUsuario.objects.all().last()
-            registro.user_id = User.objects.all().last().id
-            registro.save()
-            messages.success(request, 'Usuario registrado con Exito')
-        return HttpResponseRedirect(reverse('listarUsuarios')) #Se redirecciona a la pagina que desee
-    else:
-        form = UserForm()
-        form2 = RegistroUsuarioForm()
-        contexto = {'form':form,'form2':form2} 
-    return render(request,'perfilUsuario/crearUsuario.html', contexto) 
-   
-
-
-@login_required(login_url='/login/')
-def listarUsuarios(request):
-
-    #perfilUsuario = User, RegistroUsuario.objects.all()
-    perfilUsuario = User.objects.all()
-    perfilUsuario = RegistroUsuario.objects.all()
-    contexto = {'perfilUsuario':perfilUsuario}
-
-    return render(request,'perfilUsuario/listarUsuarios.html',contexto)
-
-@login_required(login_url='/login/')
-def actualizarUsuario(request, id_user):
-    perfilUsuario = User.objects.get(id=id_user)
-    if request.method == 'GET':
-        form = UserForm(instance=perfilUsuario)
-        form2 = RegistroUsuarioForm(instance=perfilUsuario)
-    else:
-        form = UserForm(request.POST, instance=perfilUsuario)
-        form2 = RegistroUsuarioForm(request.POST, instance=perfilUsuario)
-        if form.is_valid() and form2.is_valid():
-            form.save()
-            form2.save()
-            #contexto = {'perfilUsuario':perfilUsuario}
-            contexto = {'form':form,'form2':form2} 
-
-        return HttpResponseRedirect(reverse('listarUsuarios')) #Se redirecciona a la pagina que desee
-    return render(request, 'perfilUsuario/crearUsuario.html', contexto)
-
-@login_required(login_url='/login/')
-def eliminarUsuario(request, id_user):
-    perfilUsuario = User.objects.get(id_user)
-    if request.method == 'POST':
-        perfilUsuario.delete()
-        #contexto = {'form':form,'form2':form2} 
-        contexto = {'perfilUsuario':perfilUsuario} 
-
-        return HttpResponseRedirect(reverse('listarUsuarios')) #Se redirecciona a la pagina que desee
-    return render(request, 'perfilUsuario/eliminarUsuario.html', contexto)
-
- """
-
 
 #esta clase es cuando me voy a registrar y no tengo cuenta en el login        
 class CuentaCreateLogin(CreateView):
@@ -119,14 +53,6 @@ class CuentaCreateLogin(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
  #____________________funciones basadas en clase para la construcion del CRUD______________________
- # NOTA: cuando tenemos una funcion vasada en clase tenemos que darle seguridad de la pagina se define de esta forma ejemplo
- #class UsuarioCreate(LoginRequiredMixin, CreateView):
-    # login_url = '/login/
-    # redirect_field_name = '/login/'
-    # raise_exception = False
-    # despues implementas lo de tu modelo o lo demas
-
-
 class UsuarioCreate(LoginRequiredMixin, CreateView): 
 
     login_url = '/login/'
@@ -257,7 +183,6 @@ def userLogin(request):
             
 @login_required(login_url='/login/')
 def success(request):
-
     context = {}
     context['user'] = request.user
     return render(request, "autentificacion/login.html", context)
@@ -266,9 +191,6 @@ def success(request):
 def userLogout(request):
     logout(request)
     return HttpResponseRedirect(reverse('indexLogin'))
-
-
-
 
 # esta funcion es para renderizar al login.
 @login_required(login_url='/login/') #esta linea de código es para la seguridad de la pagina cuando tenemos una función vasada en Funciones 
@@ -292,7 +214,8 @@ def construirString():
     for object in medicamentosRojos: 
         fecha = object.fecha_vencimiento 
         diferenciaDiasM = fecha - hoy
-        medicamentos += object.nombre + " con "+ str(diferenciaDiasM) + " dias para vencer \n" 
+        medicamentos += object.nombre + " con fecha de vecimiento "+ str(object.fecha_vencimiento) +" con "+ str(diferenciaDiasM) + " dias para vencer.\n" 
+        print(medicamentos)
     return medicamentos
 
 # Función para seleccionar los Dispositivos Médicos color ROJO que estan proximos a vencer
@@ -304,7 +227,8 @@ def construirStringDispositivos():
     for object in dispositivosRojos:
         fecha = object.fecha_vencimiento 
         diferenciaDiasD = fecha - hoy 
-        dispositivos += object.nombre + " con "+ str(diferenciaDiasD) + " dias para vencer \n"
+        dispositivos += object.nombre + " con fecha de vecimiento "+ str(object.fecha_vencimiento) +" con "+ str(diferenciaDiasD) + " dias para vencer.\n"
+        print(dispositivos)
     return dispositivos
 # Función para poder enviar el mensaje al correo electronico
 def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
@@ -319,21 +243,20 @@ def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
 def contenidoMensaje():
     resultado = str()
     if not construirString():
-        resultado = "Señores usuarios Clínica Odontológica JVA, el dispositivo médico "  + construirStringDispositivos()
+        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Dispositivos Médicos que se encuentran en estado ROJO próximos para vencer son: \n\n"  + construirStringDispositivos()
         return resultado
     elif not construirStringDispositivos():
-        resultado = "Señores usuarios Clínica Odontológica JVA, el medicamento " + construirString()
+        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString()
         return resultado
     else:
-        resultado = "Señores usuarios Clínica Odontológica JVA, el medicamento " + construirString() + " Y dispositivos médicos: " +  construirStringDispositivos()
+        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString() + "\nEstos son los Dispositivos Médicos: \n\n" +  construirStringDispositivos()
         return resultado 
     return resultado
 
 
 def enviarMensaje(request):
         correos = User.objects.all()
-        correosFinal =list()
-        
+        correosFinal =list()       
         for object in correos:
                 correosFinal = object.email
                 email_message = EmailMessage(
@@ -360,38 +283,3 @@ def buscar(request):
 def user_serializer(user):
     return {'id': user.id,'name': user.first_name,'tipo_usuario': user.tipo_usuario, 'tipo_identificacion': user.tipo_identificacion,
                 'identificacion': user.identificacion,  'email': user.email, 'telefono': user.telefono, 'sexo': user.sexo}
-                
-    
-
-#---------------------------para un formulario------------------------
-
-#para un solo formulario create  vistas basadas en clase
-'''class UsuarioCreate(CreateView):
-    model = User
-    form_class = UserForm
-    form_class = RegistroUsuarioForm
-    template_name = 'perfilUsuario/crearUsuario.html'
-    success_url = reverse_lazy('listarUsuarios')'''
-
-#listar 
-'''class UsuarioList(ListView):
-    model = RegistroUsuario                                    
-    template_name = 'perfilUsuario/listarUsuarios.html'''
-
-#autualizar para un solo formulario
-'''class UsuarioUpdate(UpdateView):
-    model = User
-    model = RegistroUsuario
-    form_class = UserForm
-    form_class = RegistroUsuarioForm
-    template_name = 'perfilUsuario/crearUsuario.html'
-    success_url = reverse_lazy('listarUsuario')'''
-
-#esto es para un formulario Delete
-'''class UsuarioDelete(DeleteView):
-    model = User
-    model = RegistroUsuario
-    form_class = UserForm
-    form_class = RegistroUsuarioForm
-    template_name = 'perfilUsuario/eliminarUsuario.html'
-    success_url = reverse_lazy('listarUsuario')'''
