@@ -281,74 +281,64 @@ def nuevoCambioContraseña(request):
     return render(request, 'registrar/password_reset_complete.html')
 
 
-#--------------------función para el envio de la notificacion al email de medicamento proximo a vencer------------------------
-def construirString():
+#--------------------función para el envio de la notificacion al email de medicamento próximo a vencer------------------------
 
+# Función para seleccionar los Medicamentos color ROJO que estan proximos a vencer
+def construirString():
+    diferenciaDiasM = str()
     medicamentos = str()
     medicamentosRojos = Medicamento.objects.filter(asignacionColor ='Rojo')
+    hoy = date.today()
     for object in medicamentosRojos: 
-        medicamentos += object.nombre + " ,"
+        fecha = object.fecha_vencimiento 
+        diferenciaDiasM = fecha - hoy
+        medicamentos += object.nombre + " con "+ str(diferenciaDiasM) + " dias para vencer \n" 
     return medicamentos
 
-def construirStringDispositivos():
-
+# Función para seleccionar los Dispositivos Médicos color ROJO que estan proximos a vencer
+def construirStringDispositivos():   
     dispositivos = str()
+    diferenciaDiasD = str()
     dispositivosRojos = DispositivoMedico.objects.filter(asignacionColor ='Rojo')
-    for object in dispositivosRojos: 
-        dispositivos += object.nombre + " ,"
+    hoy = date.today()
+    for object in dispositivosRojos:
+        fecha = object.fecha_vencimiento 
+        diferenciaDiasD = fecha - hoy 
+        dispositivos += object.nombre + " con "+ str(diferenciaDiasD) + " dias para vencer \n"
     return dispositivos
-
+# Función para poder enviar el mensaje al correo electronico
 def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
 
     if not construirStringDispositivos2 and  not construirStrings:
         return True
     else: 
-        return False
+        return False       
 
-def diasMedeicamento():
-    diferenciaDiasM = str()
-    hoy = date.today()
-    medicamentos = Medicamento.objects.filter(asignacionColor = 'Rojo')
-    for medicamento in medicamentos:
-        fecha = medicamento.fecha_vencimiento
-        diferenciaDiasM = fecha - hoy
-    print(diferenciaDiasM)    
-            
-    return diferenciaDiasM 
-
-def diasDispositivoMédico():
-    diferenciaDiasD = str()
-    hoy = date.today()
-    dispositivos = DispositivoMedico.objects.filter(asignacionColor = 'Rojo')
-    for dispositivo in dispositivos:
-        fecha = dispositivo.fecha_vencimiento
-        diferenciaDiasD = fecha - hoy
-    print(diferenciaDiasD)    
-            
-    return diferenciaDiasD   
-       
-def ContenidoMensaje():
+#Función que estoy construyendo para poder enviar los Medicamentos o Dispositivos Médicos por separados
+#  y  en caso contrario si no hay ninguno de los dos que envíe un mensaje indicando que no hay nada para vencer
+def contenidoMensaje():
     resultado = str()
     if not construirString():
-        return "El o los  dispositivos medicos " + construirStringDispositivos() + " se encuentra en estado ROJO para vencer, " + diasDispositivoMédico() +" faltantes por favor estar atentos."
+        resultado = "Señores usuarios Clínica Odontológica JVA, el dispositivo médico "  + construirStringDispositivos()
+        return resultado
     elif not construirStringDispositivos():
-        return "El o los  medicamentos " + construirString() + " se encuentra en estado ROJO para vencer, " + diasMedeicamento() +" faltantes por favor estar atentos."
+        resultado = "Señores usuarios Clínica Odontológica JVA, el medicamento " + construirString()
+        return resultado
     else:
-        if not construirString() or construirStringDispositivos() == "0":
-            return "no hay Medicamentos ni Dispositivos Médicos para verificar"
+        resultado = "Señores usuarios Clínica Odontológica JVA, el medicamento " + construirString() + " Y dispositivos médicos: " +  construirStringDispositivos()
+        return resultado 
     return resultado
 
 
 def enviarMensaje(request):
         correos = User.objects.all()
         correosFinal =list()
-        message = ContenidoMensaje()
-       
+        
         for object in correos:
                 correosFinal = object.email
                 email_message = EmailMessage(
                 subject='Cambio de estado',
-                body=message,
+                body= contenidoMensaje(), 
                 from_email='clinicajva@gmail.com',
                 to=[correosFinal],
         )

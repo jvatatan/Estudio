@@ -30,10 +30,12 @@
                                 <h1 class="h4 text-gray-900 mb-4">	<datagrid>Registro de Dispositivo Médico.</datagrid></h1>
                             </div>
                             <form  method="POST" >
-                                <div class="form-group">
+                                <div class="form-group" id="formulario">
                                     {% csrf_token %}
                                     {% bootstrap_form form %}
-                                 
+                                 <div>
+                                     <input type="text" id="datos">
+                                 </div>
                                   <!-- Modal para el scaner de código QR de Medicamento-->
                                  <div id="moda" class="dropdown-divider"></div>
 
@@ -110,6 +112,7 @@
                                             <form action="https://herramientas-online.com/leer-codigo-qr-online.html" method="post" enctype="multipart/form-data">
                                                 <label for="file">BUSCAR ARCHIVO</label>
                                                 <input type="file" name="the_file" id="file" onchange="handleFiles(this.files)" aria-label="Search File">
+                                                <input type="file" id="myFile" multiple size="50" onchange="myFunction()">
                                                 </form>
                                             </div>
                                             </div>    
@@ -195,12 +198,69 @@
         return false;
     });
     </script>
+     <!-- javaScript para generar codigo QR -->
+     <script>
+        function myFunction(){
+        var x = document.getElementById("myFile");
+        var txt = "";
+
+        $.ajax({
+                url: '{% url "decodeQRDispositivoMedico" %}',
+                data: {
+                        'nombreArchivo': x.value,          
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data.code)
+                        alert("Su codigo se ha generado en el campo de codigo");
+                        document.getElementById("id_codigo").value = data.code;
+
+                    }
+                });
+
+        }
+
+        $("#qrGenerador").click(function() {
+        var code = $('input[name="codigo"]').val();
+        var nombre = $('input[name="nombre"]').val();
+        var numero_lote = $('input[name="numero_lote"]').val();
+        if (code, nombre, numero_lote) {
+            // Create Ajax Call
+            $.ajax({
+                url: '{% url "createQRForm_dispositivo" %}',
+                data: {
+                    'code': code,
+                    'nombre': nombre,
+                    'numero_lote': numero_lote,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert(code, nombre, numero_lote);
+                }
+            });
+          }else{
+              alert("No ha llenado el campo nombre o codigo, los cuales son necesarios");
+          }
+        return false;
+    });
+    </script>
+    
+    <!-- este javaScript es para pasar datos de un lado a otro siempre y cuando sea de typo = "text-->
+    <script>
+        $(document).ready(function () {
+            $("#subresultado").keyup(function () {
+                var value = $(this).val();
+                $("#id_codigo").val(value);
+            });
+        });
+    </script>
+    
     <!-- este javaScript le pasa la informacion del scaner del código QR al input(codigo) -->
     <script type="text/javascript">
         setInterval(update,1);
         function update() {
             var id_codigo = document.getElementById("subresultado").innerHTML;
-            document.getElementById("id_codigo").value = id_codigo;
+            document.getElementById("datos").value = id_codigo;
         }
         update();
     </script>

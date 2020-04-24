@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from dispositivoMedico.models import DispositivoMedico
@@ -248,21 +248,37 @@ class CreateQRForm_dispositivo(LoginRequiredMixin, View):
     def  get(self, request):
         code = request.GET.get('code', None)
         nombre = request.GET.get('nombre', None)
-        print(nombre)
-        qr = pyqrcode.create(code)
+        numero_lote =request.GET.get('numero_lote', None)
+        qr = pyqrcode.create(code + numero_lote)
         nombreArchivo = nombre +".png"
         qr.png(nombreArchivo, scale=15)
+        shutil.move(nombreArchivo, "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagDispositivoMédicoCódigoQR/" )
         qr.show()
-        shutil.move(nombreArchivo, "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagDispositivoMédicoCódigoQR")
         decodeQR(nombreArchivo)
         data = {
             'code': code,
-            'nombre': nombre
+            'nombre': nombre,
+            'numero_lote': numero_lote
         }
 
 def decodeQR(nombreArchivo):
     data = decode(Image.open(nombreArchivo))
     print(data)
+
+class decodeQRDispositivoMedico(View):
+    def  get(self, request):
+        nombreArchivo = request.GET.get('nombreArchivo', None)
+        ruta = nombreArchivo[12:len(nombreArchivo)]
+        rutaCompleta = "C:/Users/JVA TATAN THE BEST/Desktop/GIT/proyectos/tg1J/static/img/imagenes/imagDispositivoMédicoCódigoQR/"+ ruta
+        data = decode(Image.open(rutaCompleta))
+        dataStr = str(data)
+        palabra = dataStr.split("=")[1].split(",")[0]
+        palabra = palabra [2:len(palabra)-1]
+        data = {
+            'code': palabra,
+
+        }
+        return JsonResponse(data)
 
 
 #---------estas funciones es para realizar una busqueda por filtro---------  

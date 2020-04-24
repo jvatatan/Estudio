@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'listarDispositivosMedicos', DispositivoMedicoList.as_view(), name='listarDispositivosMedicos'),
     url(r'ajax/CreateQRForm_dispositivo', CreateQRForm_dispositivo.as_view(), name='createQRForm_dispositivo'),
     url(r'ActualizarColorDispositivos', ActualizarColorDispositivos.as_view(), name='ActualizarColorDispositivos'),
+     url(r'ajax/decodeQRDispositivoMedico', decodeQRDispositivoMedico.as_view(), name='decodeQRDispositivoMedico'),
+
 
 
     url(r'actualizarDispositivoMedico/(?P<pk>\d+)/$', DispositivoMedicoUpdate.as_view(), name='actualizarDispositivoMedico'),
