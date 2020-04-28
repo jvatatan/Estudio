@@ -61,25 +61,25 @@
                             aria-label="Distribuidor: activate to sort column ascending" style="width: 157px;">Fecha de vencimiento
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="Nickname: activate to sort column ascending" style="width: 70px;">Fabricado
+                            aria-label="Nickname: activate to sort column ascending" style="width: 70px;">Fabricado Por
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
                             aria-label="Email: activate to sort column ascending" style="width: 31px;">Registro Invima
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="% Comision: activate to sort column ascending" style="width: 68px;"># Lote
+                            aria-label="% Comision: activate to sort column ascending" style="width: 68px;">Número de Lote
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="Es red: activate to sort column ascending" style="width: 67px;">Presentacion Comercial
+                            aria-label="Es red: activate to sort column ascending" style="width: 67px;">Presentación Comercial
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Forma Farmaceutica
+                            aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Forma Farmacéutica
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
                             aria-label="Es red: activate to sort column ascending" style="width: 67px;">Principio Activo
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                            aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Unidad Medica
+                            aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Unidad Médica
                           </th>
                           <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
                             aria-label="Es red: activate to sort column ascending" style="width: 67px;">Porcentaje
@@ -314,6 +314,8 @@
   <script >
     $(document).ready(function() {
     $('#dataTable').DataTable( {
+      "destroy":true,
+      "language": idioma_español,
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -323,6 +325,36 @@
     // Hide two columns
       table.columns( [14] ).visible( false );
     } );
+    var idioma_español ={
+      
+      "sProcessing": "Procesando ...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sEmptyTable": "Ningún dato disponible en esta tabla",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando ...",
+      "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+      },
+      "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      },
+      "buttons": {
+          "copy": "Copiar",
+          "colvis": "Visibilidad",
+          "print" : "Imprimir"
+      }
+    }
   </script>
 
   <!-- manejo del Ajax para generar consultas por filtro-->

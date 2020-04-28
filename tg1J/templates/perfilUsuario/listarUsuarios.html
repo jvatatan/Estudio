@@ -55,13 +55,13 @@
                               aria-label="Email: activate to sort column ascending" style="width: 90px;">Email
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Tipo Identificacion
+                              aria-label="Es red: activate to sort column ascending" style="width: 67px;">Tipo Identificación
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Identificacion
+                              aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Identificación
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
-                              aria-label="Es red: activate to sort column ascending" style="width: 90px;">Telefono
+                              aria-label="Es red: activate to sort column ascending" style="width: 90px;">Teléfono
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
                               aria-label="Acciones: activate to sort column ascending" style="width: 90px;">Sexo
@@ -131,12 +131,45 @@
   <script >
     $(document).ready(function() {
     $('#dataTable').DataTable( {
+      "destroy":true,
+      "language": idioma_español,
+      
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
       } );
     } );
+    var idioma_español ={
+      
+      "sProcessing": "Procesando ...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sEmptyTable": "Ningún dato disponible en esta tabla",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando ...",
+      "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+      },
+      "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      },
+      "buttons": {
+          "copy": "Copiar",
+          "colvis": "Visibilidad",
+          "print" : "Imprimir"
+      }
+    }
   </script>
 
 

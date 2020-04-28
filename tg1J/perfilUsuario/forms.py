@@ -30,9 +30,9 @@ class UserForm(UserCreationForm):
 				'email': 'Correo Electrónico',
 				'password1': 'Contraseña',
 				'password2': 'Confirmación de Contraseña',
-				'tipo_identificacion': 'Tipo Identificacion',
-                'identificacion': 'Número de Identificacion',
-                'telefono': 'Telefono',
+				'tipo_identificacion': 'Tipo Identificación',
+                'identificacion': 'Número de Identificación',
+                'telefono': 'Teléfono',
 				'sexo': 'Sexo',
 		}
 		widgets = {

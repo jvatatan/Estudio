@@ -20,6 +20,9 @@ from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from perfilUsuario.models import User
 
+from ctypes import windll, byref
+from ctypes.wintypes import DWORD
+from socket import gethostbyname, create_connection, error
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -237,6 +240,24 @@ def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
         return True
     else: 
         return False       
+
+# Función comprobar conexion a internet
+def comprobarConexionUno():
+    avisoInform = str()
+    try:
+        gethostbyname("google.com")
+        conexion = create_connection(("google.com", 80), 1)
+        conexion.close()
+        avisoInform = "Hay conexión a internet"
+        return avisoInform
+    except error:
+        avisoInform = "No hay conexión a internet comprobar la conexión..."
+        return avisoInform
+    return avisoInform
+
+#conexion = comprobarConexion()
+conexionUno = comprobarConexionUno()
+print(conexionUno)
 
 #Función que estoy construyendo para poder enviar los Medicamentos o Dispositivos Médicos por separados
 #  y  en caso contrario si no hay ninguno de los dos que envíe un mensaje indicando que no hay nada para vencer

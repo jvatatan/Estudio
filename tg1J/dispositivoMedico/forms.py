@@ -25,20 +25,20 @@ class DispositivoMedicoForm(forms.ModelForm):
         ]
         
         labels = {
-                'Nombre': 'nombre',
-                'Fecha Vencimiento': 'fecha_vencimiento',
-                'Fabricado Por': 'fabricado_por',
-                'Registro Invima': 'registro_invima',
-                'Numero Lote': 'numero_lote',
-                'Presentacion Comercial': 'presentacion_comercial',
-                'Forma Farmaceutica': 'forma_farmaceutica',
-                'Principio Activo': 'principio_activo',
-                'Unidad Medica': 'unidad_medica',
-                'Porcentaje': '%',
-                'Temperatura': 'C°',
-                'Riesgo': 'riesgo',
-                'Cantidad': '0000...',
-                'Codigo': '0000..',
+                'nombre': 'Nombre',
+                'fecha_vencimiento': 'Fecha Vencimiento',
+                'fabricado_por': 'Fabricado por',
+                'registro_invima': 'Registro Invima',
+                'numero_lote': 'Número de Lote',
+                'presentacion_comercial': 'Presentación Comercial',
+                'forma_farmaceutica': 'Forma Farmacéutica',
+                'principio_activo': 'Principio Activo',
+                'unidad_medica': 'Unidad Médica',
+                'porcentaje': 'Porcentaje',
+                'temperatura': 'Temperatura',
+                'riesgo': 'Riesgo',
+                'cantidad': 'Cantidad',
+                'codigo': 'Código',
                 
         }
 
