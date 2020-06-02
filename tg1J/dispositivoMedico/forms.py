@@ -34,7 +34,7 @@ class DispositivoMedicoForm(forms.ModelForm):
                 'forma_farmaceutica': 'Forma Farmacéutica',
                 'principio_activo': 'Principio Activo',
                 'unidad_medica': 'Unidad Médica',
-                'porcentaje': 'Porcentaje',
+                'porcentaje': 'Porcentaje %',
                 'temperatura': 'Temperatura',
                 'riesgo': 'Riesgo',
                 'cantidad': 'Cantidad',

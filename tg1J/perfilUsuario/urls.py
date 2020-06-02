@@ -14,5 +14,8 @@ urlpatterns = [
     url(r'^reporteUsuarios/', reporteUsuarios, name="reporteUsuarios"),
     url(r'^buscar/', buscar, name="buscar"),
 
+    url(r'^conexion/', comprobarConexionUno, name="conexioninternet"),
+
+
 
 ]

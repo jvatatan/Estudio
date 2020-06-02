@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block main %}
+{% load bootstrap4 %}
+{% load staticfiles i18n %}
+
+<h1>No hay conexión a Internet</h1>
+<p>Intenta:
+<ul>
+    <il>Comprobar los cables de red, el módem y el router</il> 
+    <il>Volver a conectarte a Wi-Fi</il>
+    <il>Ejecución del Diagnóstico de red de Windows</il>
+</ul>
+</p>
+<p>DNS_PROBE_FINISHED_NO_INTERNET</p>
+<div>
+<img class="text-center" src="{% static 'img/imagenes/logoClinicaLogin.png' %}" style="width:50%; float:right;">   
+</div>
+<p>si desea continuar seleccióne este botón</p>
+<a href="{% url 'indexWelcome' %}" class="btn btn-primary">Continuar</a>
+
+{% endblock %}

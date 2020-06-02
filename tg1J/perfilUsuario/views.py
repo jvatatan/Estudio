@@ -242,40 +242,37 @@ def poderEnviarMensaje(construirStrings, construirStringDispositivos2):
         return False       
 
 # Función comprobar conexion a internet
-def comprobarConexionUno():
-    avisoInform = str()
+def comprobarConexionUno(request):
     try:
         gethostbyname("google.com")
         conexion = create_connection(("google.com", 80), 1)
         conexion.close()
-        avisoInform = "Hay conexión a internet"
-        return avisoInform
+        return True
     except error:
-        avisoInform = "No hay conexión a internet comprobar la conexión..."
-        return avisoInform
-    return avisoInform
+        return False
+        
 
 #conexion = comprobarConexion()
-conexionUno = comprobarConexionUno()
-print(conexionUno)
 
 #Función que estoy construyendo para poder enviar los Medicamentos o Dispositivos Médicos por separados
 #  y  en caso contrario si no hay ninguno de los dos que envíe un mensaje indicando que no hay nada para vencer
 def contenidoMensaje():
     resultado = str()
     if not construirString():
-        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Dispositivos Médicos que se encuentran en estado ROJO próximos para vencer son: \n\n"  + construirStringDispositivos()
+        resultado = "Señores usuarios de la Clínica Odontológica DENTI LISS.\n \n Los Dispositivos Médicos que se encuentran en estado ROJO próximos para vencer son: \n\n"  + construirStringDispositivos()
         return resultado
     elif not construirStringDispositivos():
-        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString()
+        resultado = "Señores usuarios de la Clínica Odontológica DENTI LISS.\n \n Los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString()
         return resultado
     else:
-        resultado = "Señores usuarios de la Clínica Odontológica JVA.\n \n los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString() + "\nEstos son los Dispositivos Médicos: \n\n" +  construirStringDispositivos()
+        resultado = "Señores usuarios de la Clínica Odontológica DENTI LISS.\n \n Los Medicamentos que se encuentran en estado ROJO próximos para vencer son: \n\n " + construirString() + "\nEstos son los Dispositivos Médicos: \n\n" +  construirStringDispositivos()
         return resultado 
     return resultado
 
 
 def enviarMensaje(request):
+    
+    if comprobarConexionUno(request)==True:
         correos = User.objects.all()
         correosFinal =list()       
         for object in correos:
@@ -287,6 +284,9 @@ def enviarMensaje(request):
                 to=[correosFinal],
         )
                 email_message.send()
+    else:
+        return render(request, "conexionInternet/conexionInternet.html")
+
     
 #---------estas funciones es para realizar una busqueda por filtro---------  
 def buscar(request):

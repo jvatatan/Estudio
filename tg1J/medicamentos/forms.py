@@ -32,7 +32,7 @@ class MedicamentoForm(forms.ModelForm):
                 'forma_farmaceutica': 'Forma Farmacéutica',
                 'principio_activo': 'Principio Activo',
                 'unidad_medica': 'Unidad Médica',
-                'porcentaje': 'Porcentaje',
+                'porcentaje': 'Porcentaje %',
                 'temperatura': 'Temperatura',
                 'cantidad': 'Cantidad',
                 'codigo': 'Código',
@@ -54,3 +54,4 @@ class MedicamentoForm(forms.ModelForm):
                 'Codigo':forms.TextInput(attrs={'class':'form-control form-control-medicamento'}),
         }
 
+        
