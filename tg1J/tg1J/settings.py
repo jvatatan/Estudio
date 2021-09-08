@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'tg1J.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tesis2',
+        'NAME': 'tesisprueva',
         'USER' : 'postgres',
         'PASSWORD': 'tatan',
         'HOST' : 'localhost',

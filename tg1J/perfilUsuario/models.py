@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
+
 from django.contrib.auth.models import AbstractUser
 from perfilUsuario.managers import CustomManager
 

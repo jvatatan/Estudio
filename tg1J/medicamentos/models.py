@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
 
+
 # Create your models here.
 class Medicamento(models.Model):
 
